@@ -2,20 +2,21 @@
 namespace pqwe\View;
 
 class View implements ViewInterface {
-    protected $viewFile;
+    protected $viewFile = null;
 
-    public function setViewFile($file)
-    {
+    public function __construct($file=null) {
+        $this->setViewFile($file);
+    }
+
+    public function setViewFile($file) {
         $this->viewFile = $file;
     }
-    public function return_output()
-    {
+    public function return_output() {
         ob_start();
         include($this->viewFile);
         return ob_get_clean();
     }
-    public function render()
-    {
+    public function render() {
         echo $this->return_output();
     }
 }

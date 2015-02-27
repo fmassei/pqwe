@@ -7,20 +7,20 @@ class FileUpload {
         try {
             if (    !isset($_FILES[$fieldName]['error']) ||
                     is_array($_FILES[$fieldName]['error']))
-                throw new \RuntimeException('Invalid parameters.');
+                throw new \Exception('Invalid parameters.');
             switch ($_FILES[$fieldName]['error']) {
                 case UPLOAD_ERR_OK:
                     break;
                 case UPLOAD_ERR_NO_FILE:
-                    throw new \RuntimeException('No file sent.');
+                    throw new \Exception('No file sent.');
                 case UPLOAD_ERR_INI_SIZE:
                 case UPLOAD_ERR_FORM_SIZE:
-                    throw new \RuntimeException('Exceeded filesize limit [machine configuration].');
+                    throw new \Exception('Exceeded filesize limit [machine configuration].');
                 default:
-                    throw new \RuntimeException('Unknown errors.');
+                    throw new \Exception('Unknown errors.');
             }
             if ($_FILES[$fieldName]['size'] > 100000000)
-                throw new \RuntimeException('Exceeded filesize limit [site coded].');
+                throw new \Exception('Exceeded filesize limit [site coded].');
             /*$finfo = new \finfo(FILEINFO_MIME_TYPE);
             if (false === $ext = array_search(
                     $finfo->file($_FILES[$fieldName]['tmp_name']),
@@ -29,7 +29,7 @@ class FileUpload {
                         'png' => 'image/png',
                         'gif' => 'image/gif',
                     ),true))
-                throw new \RuntimeException('Invalid file format.');*/
+                throw new \Exception('Invalid file format.');*/
             $baseName = sha1_file($_FILES[$fieldName]['tmp_name']);
             $path = $this->serviceManager->get('config');
             $path = $path['upload_dir'];
@@ -40,9 +40,9 @@ class FileUpload {
             if (!move_uploaded_file(
                     $_FILES[$fieldName]['tmp_name'],
                     $path.'/'.$fname))
-                throw new \RuntimeException('Failed to move uploaded file.');
+                throw new \Exception('Failed to move uploaded file.');
             return $fname;
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
     }
