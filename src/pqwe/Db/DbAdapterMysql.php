@@ -1,13 +1,12 @@
 <?php
 namespace pqwe\Db;
 
-class DbAdapterMysql {
+class DbAdapterMysql implements IDb {
     protected $mysqli;
     public function __construct($hostname, $username, $password, $database)
     {
         $this->mysqli = new \mysqli($hostname, $username, $password, $database);
         $this->mysqli->set_charset("utf8");
-        $this->mysqli->query("SET SESSION group_concat_max_len = 1000000");
     }
     public function __destruct() {
         $this->mysqli->close();
@@ -31,7 +30,7 @@ class DbAdapterMysql {
             error_log("query failed: ".str_replace("\n"," ",$str)." [err: ".$this->mysqli->error."]");
         return $ret;
     }
-    public function begin_transaction() {
+    public function beginTransaction() {
         if ($this->mysqli->autocommit(false)===false)
             throw new \Exception($this->mysqli->error);
     }
