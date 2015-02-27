@@ -1,7 +1,7 @@
 <?php
 namespace pqwe\Db;
 
-class DbAdapter {
+class DbAdapterMysql {
     protected $mysqli;
     public function __construct($hostname, $username, $password, $database)
     {
