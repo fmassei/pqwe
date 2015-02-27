@@ -1,6 +1,6 @@
 {
     "name" : "pqwe/core",
-    "version" : "0.0.1"
+    "version" : "0.0.1",
     "autoload": {
        "psr-4": {"pqwe\\": "src/pqwe"}
     },
