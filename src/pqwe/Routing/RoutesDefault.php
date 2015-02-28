@@ -6,7 +6,8 @@ class RoutesDefault {
     protected $cached_host = null;
 
     public function getURLParts($url) {
-        /* TODO: fix adding constraints */
+        if (($qs = strpos($url, "?"))!==false)
+            $url = substr($url, 0, $qs);
         $uriParts = explode("/", $url);
         array_shift($uriParts);
         if (count($uriParts)>=1 && $uriParts[count($uriParts)-1]==="")

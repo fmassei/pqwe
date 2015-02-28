@@ -1,11 +1,18 @@
 <?php
 namespace pqwe\Controller;
 
-class Controller {
+use pqwe\View\IView;
+
+class ControllerBase {
     protected $serviceManager;
     public function __construct($serviceManager) {
         $this->serviceManager = $serviceManager;
     }
+    public function preAction() { }
+    public function postAction(IView $view) {
+        $view->render();
+    }
+
     protected function redirect($page, $code=302) {
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');

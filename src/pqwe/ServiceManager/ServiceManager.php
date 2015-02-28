@@ -8,8 +8,7 @@ class ServiceManager {
     protected $factories;
     protected $shared;
 
-    public function __construct($config)
-    {
+    public function __construct($config) {
         $this->instances['config'] = $config;
         $this->invokables = isset($config['service_manager']['invokables']) ?
                         $config['service_manager']['invokables'] : array();
@@ -18,12 +17,14 @@ class ServiceManager {
         $this->shared = isset($config['service_manager']['shared']) ?
                         $config['service_manager']['shared'] : array();
     }
-
-    public function get($what)
-    {
+    public function isRegistered($what) {
+        return  isset($this->instances[$what]) ||
+                isset($this->invokables[$what]) ||
+                isset($this->factories[$what]);
+    }
+    public function get($what) {
         if (isset($this->instances[$what]))
             return $this->instances[$what];
-        $config = $this->get('config');
         /* invokables */
         if (isset($this->invokables[$what])) {
             $className = "\\".$this->invokables[$what];
