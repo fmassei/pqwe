@@ -17,9 +17,13 @@ class RouterDefault {
         foreach($this->def as $route) {
             switch ($route['type']) {
             case 'exact':
-                if ($route['route']==$cleanUrl)
+                if ($route['route']==$cleanUrl) {
+                    $params = isset($route['params']) ? $route['params']
+                                                      : array();
                     return array('controller' => $route['controller'],
-                                 'action' => $route['action']);
+                                 'action' => $route['action'],
+                                 'params' => $params);
+                }
                 break;
             case 'regexp':
                 $matches = array();
