@@ -1,6 +1,8 @@
 <?php
 namespace pqwe\Db;
 
+use \pqwe\Exception\PqweDbException;
+
 class DbAdapterMysql implements IDb {
     protected $mysqli;
     public function __construct($hostname, $username, $password, $database)
@@ -24,7 +26,6 @@ class DbAdapterMysql implements IDb {
         return $ret;
     }
     public function query($str) {
-        //error_log('mysqli query: '.str_replace("\n", " ", $str));
         //error_log('bt'.$this->getBTStr(debug_backtrace()));
         if (($ret = $this->mysqli->query($str))===false)
             error_log("query failed: ".str_replace("\n"," ",$str)." [err: ".$this->mysqli->error."]");
@@ -32,16 +33,16 @@ class DbAdapterMysql implements IDb {
     }
     public function beginTransaction() {
         if ($this->mysqli->autocommit(false)===false)
-            throw new \Exception($this->mysqli->error);
+            throw new PqweDbException($this->mysqli->error);
     }
     public function commit() {
         if ($this->mysqli->commit()===false)
-            throw new \Exception($this->mysqli->error);
+            throw new PqweDbException($this->mysqli->error);
         $this->mysqli->autocommit(true);
     }
     public function rollback() {
         if ($this->mysqli->rollback()===false)
-            throw new \Exception($this->mysqli->error);
+            throw new PqweDbException($this->mysqli->error);
         $this->mysqli->autocommit(true);
     }
     public function error() { return $this->mysqli->error; }

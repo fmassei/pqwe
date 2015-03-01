@@ -1,6 +1,8 @@
 <?php
 namespace pqwe\Routing;
 
+use pqwe\Exception\PqweRoutingException;
+
 class RouterDefault {
     protected $serviceManager;
     protected $def;
@@ -31,7 +33,7 @@ class RouterDefault {
                         else
                             $params[] = $matches[$i+1][0];
                     if ($action===null)
-                        throw new \Exception('Router: no action');
+                        throw new PqweRoutingException('no action');
                     return array('controller' => $route['controller'],
                                  'action' => $action,
                                  'params' => $params);
@@ -39,7 +41,7 @@ class RouterDefault {
                 break;
             }
         }
-        throw new \Exception('Router: no route for '.$cleanUrl);
+        throw new PqweRoutingException('no route for '.$cleanUrl);
     }
 }
 

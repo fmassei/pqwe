@@ -1,6 +1,8 @@
 <?php
 namespace pqwe\ServiceManager;
 
+use \pqwe\Exception\PqweServiceManagerException;
+
 class ServiceManager {
     protected $instances;
 
@@ -45,7 +47,7 @@ class ServiceManager {
             $this->instances[$what] = $instance;
             return $this->instances[$what];
         }
-        throw new \Exception("SM: class $what not found");
+        throw new PqweServiceManagerException("class '$what' not found");
     }
     public function set($what, $obj) {
         $this->instances[$what] = $obj;

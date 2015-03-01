@@ -1,6 +1,8 @@
 <?php
 namespace pqwe\View;
 
+use \pqwe\Exception\PqweMVCException;
+
 class View implements IView {
     protected $viewFile = null;
     protected $raw_content = null;
@@ -25,7 +27,7 @@ class View implements IView {
             include($this->viewFile);
             return ob_get_clean();
         } else {
-            throw new \Exception('View: empty');
+            throw new PqweMVCException('empty view');
         }
     }
     public function render() {

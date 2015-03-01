@@ -1,6 +1,8 @@
 <?php
 namespace pqwe\Db;
 
+use \pqwe\Exception\PqweDbException;
+
 class DbAdapterPDO implements IDb {
     protected $pdo;
     public function __construct($dsn, $username, $password, $database, $options)
@@ -31,15 +33,15 @@ class DbAdapterPDO implements IDb {
     }
     public function beginTransaction() {
         if ($this->pdo->beginTransaction()===false)
-            throw new \Exception($this->getErrorString());
+            throw new PqweDbException($this->getErrorString());
     }
     public function commit() {
         if ($this->pdo->commit()===false)
-            throw new \Exception($this->getErrorString());
+            throw new PqweDbException($this->getErrorString());
     }
     public function rollback() {
         if ($this->pdo->rollback()===false)
-            throw new \Exception($this->getErrorString());
+            throw new PqweDbException($this->getErrorString());
     }
     public function error() {
         return $this->getErrorString();
