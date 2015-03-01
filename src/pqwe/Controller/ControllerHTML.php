@@ -5,23 +5,33 @@ use pqwe\View\View;
 use pqwe\View\IView;
 
 class ControllerHTML extends ControllerBase {
-    protected $layout;
+    protected $layoutView;
+    protected $viewFolder;
+    protected $layoutFile;
+
+    private $actualDir;
 
     public function __construct($serviceManager) {
         parent::__construct($serviceManager);
+        $this->viewFolder = 'view';
+        $this->layoutFile = 'layout.phtml';
     }
     public function preAction($routeMatch) {
-        $this->layout = new View();
-        $namespace = substr($routeMatch['controller'], 0,
-            strpos($routeMatch['controller'], '\\', 1));
-        if ($namespace[0]=='\\')
-            $namespace = substr($namespace, 1);
-        $this->layout->setViewFile($namespace.'/view/layout/layout.phtml');
-
+        $this->layoutView = new View();
+        $this->actualDir =
+            \pqwe\Utils\Namespaces::getFirst($routeMatch['controller']);
+        $fpath = \pqwe\Utils\Files::makePath($this->actualDir,
+                                        $this->viewFolder, $this->layoutFile);
+        $this->layoutView->setViewFile($fpath);
     }
-    public function postAction(IView $view) {
-        $this->layout->content = $view->return_output();
-        $this->layout->render();
+    public function postAction(IView $view, $action) {
+        if ($view->isEmpty()) {
+            $fpath = \pqwe\Utils\Files::makePath($this->actualDir,
+                                        $this->viewFolder, $action.'.phtml');
+            $view->setViewFile($fpath);
+        }
+        $this->layoutView->content = $view->return_output();
+        $this->layoutView->render();
     }
 }
 

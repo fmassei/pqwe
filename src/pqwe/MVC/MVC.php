@@ -23,10 +23,11 @@ class MVC {
         }
         $what = $router->match();
         $controller = new $what['controller']($this->serviceManager);
-        $action = $what['action'].'Action';
+        $action = $what['action'];
         $controller->preAction($what);
-        $view = call_user_func_array(array($controller, $action), $what['params']);
-        $controller->postAction($view);
+        $view = call_user_func_array(array($controller, $action.'Action'),
+                                     $what['params']);
+        $controller->postAction($view, $action);
     }
 }
 

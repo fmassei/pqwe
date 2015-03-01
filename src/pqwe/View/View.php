@@ -8,7 +8,9 @@ class View implements IView {
     public function __construct($file=null) {
         $this->setViewFile($file);
     }
-
+    public function isEmpty() {
+        return $this->viewFile===null && $this->raw_content===null;
+    }
     public function setViewFile($file) {
         $this->viewFile = $file;
     }

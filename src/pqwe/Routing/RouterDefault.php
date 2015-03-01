@@ -39,7 +39,7 @@ class RouterDefault {
                 break;
             }
         }
-        throw new \Exception('Router: no route');
+        throw new \Exception('Router: no route for '.$cleanUrl);
     }
 }
 
