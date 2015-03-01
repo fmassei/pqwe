@@ -24,7 +24,7 @@ class MVC {
         $what = $router->match();
         $controller = new $what['controller']($this->serviceManager);
         $action = $what['action'].'Action';
-        $controller->preAction();
+        $controller->preAction($what);
         $view = call_user_func_array(array($controller, $action), $what['params']);
         $controller->postAction($view);
     }

@@ -8,7 +8,7 @@ class ControllerBase {
     public function __construct($serviceManager) {
         $this->serviceManager = $serviceManager;
     }
-    public function preAction() { }
+    public function preAction($routeMatch) { }
     public function postAction(IView $view) {
         $view->render();
     }
