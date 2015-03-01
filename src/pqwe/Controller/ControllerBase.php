@@ -29,6 +29,9 @@ class ControllerBase {
         $str = $this->getPOSTstr($name);
         return ($str=="") ? null : $str;
     }
+    protected function getPOSTdefault($name, $default=null) {
+        return isset($_POST[$name]) ? $_POST[$name] : $default;
+    }
     protected function getPOSTemptyArray() {
         $ret = array();
         foreach(func_get_args() as $str)
