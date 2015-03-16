@@ -1,7 +1,7 @@
 <?php
-throw new \Exception('unimplemented');
-
 class pqwe_utils {
+    require_once('pqwe_utils.i.php');
+
     protected function print_usage() {
         echo
 "usage: pqwe_util <command> <parameters>
@@ -18,11 +18,22 @@ command:
         return join(DIRECTORY_SEPARATOR, func_get_args());
     }
     protected function do_create_project($name, $basedir) {
+        /* TODO check or change name for folder name */
         $privateDir = $this->mkpath($basedir, "private");
+        $configDir = $this->mkpath($privateDir, "config");
+        $prjDir = $this->mkpath($privateDir, $name);
         $publicDir = $this->mkpath($basedir, "public");
         if (    @chdir($basedir)===false ||
                 @mkdir($privateDir)===false ||
-                @mkdir($publicDir)===false  ) {
+                @mkdir($configDir)===false ||
+                @mkdir($prjDir)===false ||
+                @mkdir($publicDir)===false ||
+                @file_put_contents($this->mkpath($publicDir,".htaccess"),
+                                   $this->f_htaccess)===false ||
+                @file_put_contents($this->mkpath($configDir,"config.php"),
+                                   $this->f_config)===false ||
+                @file_put_contents($this->mkpath($publicDir,"index.php"),
+                                   $this->f_indexphp)===false)
             $this->print_last_error();
             return 1;
         }
