@@ -13,10 +13,14 @@ class ControllerBase {
         $view->render();
     }
 
-    protected function redirect($page, $code=302) {
+    protected function redirect($page, $code=302, $schema=null) {
+        if ($schema===null) {
+            $routes = $this->serviceManager->getOrGetDefault('pqwe_routes');
+            $schema = $routes->getSchema();
+        }
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        header("Location: http://$host$uri/$page", true, $code);
+        header("Location: $schema://$host$uri/$page", true, $code);
         die();
     }
     protected function isPOSTfilled($name) {

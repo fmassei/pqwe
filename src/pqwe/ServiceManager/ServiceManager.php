@@ -52,5 +52,26 @@ class ServiceManager {
     public function set($what, $obj) {
         $this->instances[$what] = $obj;
     }
+    /* should be used only interally by pqwe, to load default classes when
+     * none is specified */
+    public function getOrGetDefault($what) {
+        if ($this->isRegistered($what))
+            return $this->get($what);
+        switch($what) {
+        case 'pqwe_routes':
+            $routes = new \pqwe\Routing\RoutesDefault();
+            $this->serviceManager->set($what, $routes);
+            break;
+        case 'pqwe_router':
+            $config = $this->get('config');
+            $routes = $this->getOrGetDefault('pqwe_routes');
+            $router = new \pqwe\Routing\RouterDefault($this, $config, $routes);
+            $this->serviceManager->set($what, $router);
+            break;
+        default:
+            throw new PqweServiceManagerException("internal calss '$what' not found");
+        }
+        return $this->get($what);
+    }
 }
 

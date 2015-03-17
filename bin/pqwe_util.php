@@ -1,5 +1,7 @@
 <?php
 class pqwe_utils {
+    private $stdin;     /* stdin handle */
+
     protected $f_htaccess =
 "RewriteEngine On
 # If the requested filename exists, serve it.
@@ -59,14 +61,44 @@ command:
     }
     private function print_last_error() {
         $err = error_get_last();
-        echo "Error: {$err['message']}\n";
+        echo "Last error: {$err['message']}\n";
     }
     private function mkpath() {
         return join(DIRECTORY_SEPARATOR, func_get_args());
     }
+    private function getUserInput($default) {
+        $line = fgets($this->stdin);
+        if ($line===false || ($ui = trim($line))=="")
+            return $default;
+        return $ui;
+    }
+    private function createDirAsk($descr, $default) {
+        echo "$descr [$default]: ";
+        $name = $this->getUserInput($default);
+        if (@mkdir($name)===false)
+            throw new \Exception("could not create dir $name");
+        return $name;
+    }
     protected function do_create_project($name, $basedir) {
+        try {
+            if (@chdir($basedir)===false)
+                throw new \Exception("could not access dir $basedir");
+            $publicDir = $this->createDirAsk(
+                "public directory (webserver root)", "public/");
+            $privateDir = $this->createDirAsk(
+                "private directory (code, views, configs, etc.)", "private/");
+            $configDir = $this->mkpath($privateDir, "config");
+            if (@mkdir($configDir)===false)
+                throw new \Exception("could not create dir $configDir");
+        } catch(\Exception $ex) {
+            if (($msg = $ex->getMessage())!="")
+                echo "Error: $msg\n";
+            $this->print_last_error();
+            return false;
+        }
+        return true;
         /* TODO check or change name for folder name */
-        $privateDir = $this->mkpath($basedir, "private");
+        /*$privateDir = $this->mkpath($basedir, "private");
         $configDir = $this->mkpath($privateDir, "config");
         $prjDir = $this->mkpath($privateDir, $name);
         $publicDir = $this->mkpath($basedir, "public");
@@ -84,7 +116,7 @@ command:
             $this->print_last_error();
             return 1;
         }
-        return 0;
+        return 0;*/
     }
     protected function run($argc, &$argv) {
         if ($argc<=1) {
@@ -99,13 +131,16 @@ command:
                 $this->print_usage();
                 exit(1);
             }
-            return $this->do_create_project($argv[2], $argv[3]);
+            return $this->do_create_project($argv[2], $argv[3]) ? 0 : 1;
         default:
             echo "Unknown command '$command'\n";
             $this->print_usage();
             exit(1);
         }
         return 0;
+    }
+    public function __construct() {
+        $this->stdin = fopen('php://stdin', 'r');
     }
     public static function main($argc, &$argv) {
         $instance = new self();

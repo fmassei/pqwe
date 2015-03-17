@@ -4,6 +4,7 @@ namespace pqwe\Routing;
 class RoutesDefault {
     protected $cached_parts = null;
     protected $cached_host = null;
+    protected $cached_schema = null;
 
     public function getURLParts($url) {
         if (($qs = strpos($url, "?"))!==false)
@@ -34,9 +35,25 @@ class RoutesDefault {
             }
             // Remove port number from host
             $host = preg_replace('/:\d+$/', '', $host);
-            $cached_host = trim($host);
+            $this->cached_host = trim($host);
         }
         return $this->cached_host;
+    }
+    /* this will hopefully work even under a load balancer/reverse proxy */
+    public function getSchema() {
+        if ($this->cached_schema===null) {
+            $isHTTPS = false;
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off') {
+                $isHTTPS = true;
+            } else if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+                       $_SERVER['HTTP_X_FORWARDED_PROTO']=='https' ||
+                       !empty($_SERVER['HTTP_X_FORWARDED_SSL']) &&
+                       $_SERVER['HTTP_X_FORWARDED_SSL']!=='off') {
+                $isHTTPS = true;
+            }
+            $this->cached_schema = $isHTTPS ? 'https' : 'http';
+        }
+        return $this->cached_schema;
     }
 }
 
