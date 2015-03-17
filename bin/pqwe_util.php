@@ -10,14 +10,14 @@ RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
 # All other queries to index.php. It works with virtual hosting too.
-RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\$
 RewriteRule ^(.*) - [E=BASE:%1]
 RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
 # Disable the multiview function in apache
 Options -MultiViews";
     protected $f_indexphp =
 "<?php
-chdir(dirname(__DIR__).'/private/');
+chdir(dirname(__DIR__).'/[_PRIVATEDIR]/');
 
 if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url(\$_SERVER['REQUEST_URI'], PHP_URL_PATH)))
     return false;
@@ -72,24 +72,51 @@ command:
             return $default;
         return $ui;
     }
+    private function mkdir($name) {
+        if (@mkdir($name)===false)
+            throw new \Exception("could not create dir $name");
+        echo "- created directory '$name'\n";
+    }
+    private function file_put_contents($file, $str) {
+        if (@file_put_contents($file, $str)===false)
+            throw new \Exception("could not write to file $file");
+        echo "- file $file filled\n";
+    }
     private function createDirAsk($descr, $default) {
         echo "$descr [$default]: ";
         $name = $this->getUserInput($default);
-        if (@mkdir($name)===false)
-            throw new \Exception("could not create dir $name");
+        $this->mkdir($name);
         return $name;
+    }
+    private function askPermission($descr, $defaultTrue) {
+        if ($defaultTrue) { $y='Y'; $n='n'; }
+        else { $y='y'; $n='N'; }
+        echo "$descr [$y/$n]? ";
+        $ret = strtolower($this->getUserInput($defaultTrue?'y':'n'));
+        return $ret=='y';
     }
     protected function do_create_project($name, $basedir) {
         try {
             if (@chdir($basedir)===false)
                 throw new \Exception("could not access dir $basedir");
+            echo "directory to creation:\n".
+                 "----------------------\n";
             $publicDir = $this->createDirAsk(
-                "public directory (webserver root)", "public/");
+                "public directory (webserver root)", "public");
             $privateDir = $this->createDirAsk(
-                "private directory (code, views, configs, etc.)", "private/");
+                "private directory (code, views, configs, etc.)", "private");
             $configDir = $this->mkpath($privateDir, "config");
-            if (@mkdir($configDir)===false)
-                throw new \Exception("could not create dir $configDir");
+            $this->mkdir($configDir);
+            if ($this->askPermission("create a default config file", true))
+                $this->file_put_contents($this->mkpath($configDir,"config.php"),
+                                         $this->f_config);
+            if ($this->askPermission("create a default .htaccess", true))
+                $this->file_put_contents($this->mkpath($publicDir,".htaccess"),
+                                         $this->f_htaccess);
+            if ($this->askPermission("create a default index.php", true))
+                $this->file_put_contents($this->mkpath($publicDir,"index.php"),
+                                    str_replace("[_PRIVATEDIR]", $privateDir,
+                                                $this->f_indexphp));
         } catch(\Exception $ex) {
             if (($msg = $ex->getMessage())!="")
                 echo "Error: $msg\n";
@@ -97,26 +124,6 @@ command:
             return false;
         }
         return true;
-        /* TODO check or change name for folder name */
-        /*$privateDir = $this->mkpath($basedir, "private");
-        $configDir = $this->mkpath($privateDir, "config");
-        $prjDir = $this->mkpath($privateDir, $name);
-        $publicDir = $this->mkpath($basedir, "public");
-        if (    @chdir($basedir)===false ||
-                @mkdir($privateDir)===false ||
-                @mkdir($configDir)===false ||
-                @mkdir($prjDir)===false ||
-                @mkdir($publicDir)===false ||
-                @file_put_contents($this->mkpath($publicDir,".htaccess"),
-                                   $this->f_htaccess)===false ||
-                @file_put_contents($this->mkpath($configDir,"config.php"),
-                                   $this->f_config)===false ||
-                @file_put_contents($this->mkpath($publicDir,"index.php"),
-                                   $this->f_indexphp)===false) {
-            $this->print_last_error();
-            return 1;
-        }
-        return 0;*/
     }
     protected function run($argc, &$argv) {
         if ($argc<=1) {
