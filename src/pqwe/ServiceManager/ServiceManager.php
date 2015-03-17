@@ -65,7 +65,8 @@ class ServiceManager {
         case 'pqwe_router':
             $config = $this->get('config');
             $routes = $this->getOrGetDefault('pqwe_routes');
-            $router = new \pqwe\Routing\RouterDefault($this, $config, $routes);
+            $router = new \pqwe\Routing\RouterDefault($this, $config['routes'],
+                                                             $routes);
             $this->set($what, $router);
             break;
         default:
