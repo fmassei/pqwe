@@ -55,8 +55,11 @@ return array(
         echo
 "usage: pqwe_util <command> <parameters>
 command:
-    create-project <name> <basedir>      create a standard skelethon for a new
-                                         project in the given directory
+    create-project <basedir>        create a standard skelethon for a new
+                                    project in the given directory
+    create-module <name> <dir>      create a new module in the give dir (which
+                                    you probably want to set to your project
+                                    private dir)
 ";
     }
     private function print_last_error() {
@@ -95,12 +98,12 @@ command:
         $ret = strtolower($this->getUserInput($defaultTrue?'y':'n'));
         return $ret=='y';
     }
-    protected function do_create_project($name, $basedir) {
+    protected function do_create_project($basedir) {
         try {
             if (@chdir($basedir)===false)
                 throw new \Exception("could not access dir $basedir");
-            echo "directory to creation:\n".
-                 "----------------------\n";
+            echo "project creation started:\n".
+                 "-------------------------\n";
             $publicDir = $this->createDirAsk(
                 "public directory (webserver root)", "public");
             $privateDir = $this->createDirAsk(
@@ -117,6 +120,33 @@ command:
                 $this->file_put_contents($this->mkpath($publicDir,"index.php"),
                                     str_replace("[_PRIVATEDIR]", $privateDir,
                                                 $this->f_indexphp));
+            if ($this->askPermission("create a new module now", true)) {
+                echo "module name: ";
+                if (($name = $this->getUserInput(""))=="")
+                    echo "abort\n";
+                else
+                    $this->do_create_module($name, $privateDir);
+            }
+        } catch(\Exception $ex) {
+            if (($msg = $ex->getMessage())!="")
+                echo "Error: $msg\n";
+            $this->print_last_error();
+            return false;
+        }
+        return true;
+    }
+    protected function do_create_module($name, $privateDir) {
+        try {
+            if (@chdir($privateDir)===false)
+                throw new \Exception("could not access dir $privateDir");
+            echo "module creation started:\n".
+                 "------------------------\n";
+            $moduleDir = $name;
+            $this->mkdir($moduleDir);
+            $this->mkdir($this->mkpath($moduleDir, "src"));
+            $this->mkdir($this->mkpath($moduleDir, "src", "Controller"));
+            $this->mkdir($this->mkpath($moduleDir, "src", "Model"));
+            $this->mkdir($this->mkpath($moduleDir, "view"));
         } catch(\Exception $ex) {
             if (($msg = $ex->getMessage())!="")
                 echo "Error: $msg\n";
@@ -133,12 +163,19 @@ command:
         $command = $argv[1];
         switch($command) {
         case "create-project":
-            if (!isset($argv[2]) || !isset($argv[3])) {
-                echo "to few parameters for create-project\n";
+            if (!isset($argv[2])) {
+                echo "to few parameters for $command\n";
                 $this->print_usage();
                 exit(1);
             }
-            return $this->do_create_project($argv[2], $argv[3]) ? 0 : 1;
+            return $this->do_create_project($argv[2]) ? 0 : 1;
+        case "create-module":
+            if (!isset($argv[2]) || !isset($argv[3])) {
+                echo "to few parameters for $command\n";
+                $this->print_usage();
+                exit(1);
+            }
+            return $this->do_create_module($argv[2], $argv[3]) ? 0 : 1;
         default:
             echo "Unknown command '$command'\n";
             $this->print_usage();
