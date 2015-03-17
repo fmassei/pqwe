@@ -60,13 +60,13 @@ class ServiceManager {
         switch($what) {
         case 'pqwe_routes':
             $routes = new \pqwe\Routing\RoutesDefault();
-            $this->serviceManager->set($what, $routes);
+            $this->set($what, $routes);
             break;
         case 'pqwe_router':
             $config = $this->get('config');
             $routes = $this->getOrGetDefault('pqwe_routes');
             $router = new \pqwe\Routing\RouterDefault($this, $config, $routes);
-            $this->serviceManager->set($what, $router);
+            $this->set($what, $router);
             break;
         default:
             throw new PqweServiceManagerException("internal calss '$what' not found");
