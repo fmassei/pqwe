@@ -36,6 +36,8 @@ class RouterDefault {
                             $action = $matches[$i+1][0];
                         else
                             $params[] = $matches[$i+1][0];
+                    if ($action===null && isset($route['action']))
+                        $action = $route['action'];
                     if ($action===null)
                         throw new PqweRoutingException('no action');
                     return array('controller' => $route['controller'],
