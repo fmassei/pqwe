@@ -2,6 +2,7 @@
     "name" : "pqwe/core",
     "description": "pqwe framework",
     "type" : "library",
+    "license" : "BSD-3-Clause",
     "keywords" : [
         "framework",
         "pqwe"
