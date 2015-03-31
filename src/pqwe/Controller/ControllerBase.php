@@ -20,7 +20,9 @@ class ControllerBase {
         }
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        header("Location: $schema://$host$uri/$page", true, $code);
+        if ($page=="" || $page[0]!='/')
+            $page = '/'.$page;
+        header("Location: $schema://$host$uri$page", true, $code);
         die();
     }
     protected function isPOSTfilled($name) {
