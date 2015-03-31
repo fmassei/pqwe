@@ -4,8 +4,8 @@ namespace pqwe\Form;
 use \pqwe\Exception\PqweUploadException;
 
 class FileUpload {
-    public static function getUploadedFile($fieldName, $outFile, $maxSize=0,
-                                           $acceptedMimeTypes=null)
+    public static function getFileObj($fieldName, $maxSize=0,
+                                      $acceptedMimeTypes=null)
     {
         $file = $_FILES[$fieldName];
         if (!isset($file['error']) || is_array($file['error']))
@@ -30,6 +30,12 @@ class FileUpload {
                     $acceptedMimeTypes, true))===false)
             throw new PqweUploadException('Invalid file format.');
         }
+        return $file;
+    }
+    public static function getUploadedFile($fieldName, $outFile, $maxSize=0,
+                                           $acceptedMimeTypes=null)
+    {
+        $file = self::getFileObj($fieldName, $maxSize, $acceptedMimeTypes);
         if (file_exists($outFile))
             throw new PqweUploadException('Out file already exists');
         if (!move_uploaded_file($file['tmp_name'], $outFile))
