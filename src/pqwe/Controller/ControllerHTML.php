@@ -33,6 +33,7 @@ class ControllerHTML extends ControllerBase {
                                                  $action.'.phtml');
             $view->setViewFile($fpath);
         }
+        $this->layoutView->action = $action;
         $this->layoutView->content = $view->return_output();
         $this->layoutView->render();
     }
