@@ -2,7 +2,7 @@
 namespace pqwe\Factory;
 
 use pqwe\ServiceManager\ServiceManager;
-use pqwe\Db\DbAdapter;
+use pqwe\Db\DbAdapterMysql;
 
 class DbFactoryMysql implements FactoryInterface {
     public function create(ServiceManager $sm) {
