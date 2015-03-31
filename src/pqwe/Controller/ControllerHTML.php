@@ -20,7 +20,7 @@ class ControllerHTML extends ControllerBase {
     public function preAction($routeMatch) {
         $this->layoutView = new View();
         $this->actualDir =
-            \pqwe\Utils\Namespaces::getFirst($routeMatch['controller']);
+            \pqwe\Utils\Namespaces::getFirst($routeMatch->controller);
         $this->viewFolderPath = \pqwe\Utils\Files::makePath($this->actualDir,
                                                 $this->viewFolderName);
         $fpath = \pqwe\Utils\Files::makePath($this->viewFolderPath,

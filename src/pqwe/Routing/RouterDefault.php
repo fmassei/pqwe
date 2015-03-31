@@ -20,9 +20,9 @@ class RouterDefault {
                 if ($route['route']==$cleanUrl) {
                     $params = isset($route['params']) ? $route['params']
                                                       : array();
-                    return array('controller' => $route['controller'],
-                                 'action' => $route['action'],
-                                 'params' => $params);
+                    return new RouteMatch($route['controller'],
+                                          $route['action'],
+                                          $params);
                 }
                 break;
             case 'regexp':
@@ -40,10 +40,16 @@ class RouterDefault {
                         $action = $route['action'];
                     if ($action===null)
                         throw new PqweRoutingException('no action');
-                    return array('controller' => $route['controller'],
-                                 'action' => $action,
-                                 'params' => $params);
+                    return new RouteMatch($route['controller'],
+                                          $action,
+                                          $params);
                 }
+                break;
+            case 'custom':
+                $class = $route['class'];
+                $router = new $class($this->serviceManager);
+                if (($match = $router->match($cleanUrl))!==null)
+                    return $match;
                 break;
             }
         }

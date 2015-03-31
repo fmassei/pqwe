@@ -9,12 +9,13 @@ class MVC {
     }
     public function run() {
         $router = $this->serviceManager->getOrGetDefault('pqwe_router');
-        $what = $router->match();
-        $controller = new $what['controller']($this->serviceManager);
-        $action = $what['action'];
-        $controller->preAction($what);
+        $routeMatch = $router->match();
+        $controller = $routeMatch->controller;
+        $controller = new $controller($this->serviceManager);
+        $action = $routeMatch->action;
+        $controller->preAction($routeMatch);
         $view = call_user_func_array(array($controller, $action.'Action'),
-                                     $what['params']);
+                                     $routeMatch->params);
         $controller->postAction($view, $action);
     }
 }
