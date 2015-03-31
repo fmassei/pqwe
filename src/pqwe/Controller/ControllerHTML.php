@@ -17,7 +17,7 @@ class ControllerHTML extends ControllerBase {
         $this->viewFolderName = 'view';
         $this->layoutFile = 'layout.phtml';
     }
-    public function preAction($routeMatch) {
+    public function preAction(&$routeMatch) {
         $this->layoutView = new View();
         $this->actualDir =
             \pqwe\Utils\Namespaces::getFirst($routeMatch->controller);
