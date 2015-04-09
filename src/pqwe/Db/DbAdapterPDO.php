@@ -4,7 +4,8 @@ namespace pqwe\Db;
 use \pqwe\Exception\PqweDbException;
 
 class DbAdapterPDO implements IDb {
-    protected $pdo;
+    public $pdo;
+
     public function __construct($dsn, $username, $password, $options)
     {
         $this->pdo = new \PDO($dsn, $username, $password, $options);

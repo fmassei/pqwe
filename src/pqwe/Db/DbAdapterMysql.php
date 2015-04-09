@@ -4,7 +4,8 @@ namespace pqwe\Db;
 use \pqwe\Exception\PqweDbException;
 
 class DbAdapterMysql implements IDb {
-    protected $mysqli;
+    public $mysqli;
+
     public function __construct($hostname, $username, $password, $database)
     {
         $this->mysqli = new \mysqli($hostname, $username, $password, $database);
