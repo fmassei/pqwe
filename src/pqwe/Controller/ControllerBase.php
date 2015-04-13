@@ -14,16 +14,8 @@ class ControllerBase {
     }
 
     protected function redirect($page, $code=302, $schema=null) {
-        if ($schema===null) {
-            $routes = $this->serviceManager->getOrGetDefault('pqwe_routes');
-            $schema = $routes->getSchema();
-        }
-        $host = $_SERVER['HTTP_HOST'];
-        $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-        if ($page=="" || $page[0]!='/')
-            $page = '/'.$page;
-        header("Location: $schema://$host$uri$page", true, $code);
-        die();
+        $routes = $this->serviceManager->getOrGetDefault('pqwe_routes');
+        $routes->redirect($page, $code, $schema);
     }
     protected function isPOSTfilled($name) {
         return isset($_POST[$name]) && trim($_POST[$name])!="";
