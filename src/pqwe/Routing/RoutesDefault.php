@@ -59,7 +59,7 @@ class RoutesDefault {
     public function redirect($page, $code=302, $schema=null) {
         if ($schema===null)
             $schema = $this->getSchema();
-        $host = $_SERVER['HTTP_HOST'];
+        $host = $this->getHost();
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
         if ($page=="" || $page[0]!='/')
             $page = '/'.$page;
