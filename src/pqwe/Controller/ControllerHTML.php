@@ -9,6 +9,7 @@ class ControllerHTML extends ControllerBase {
     protected $viewFolderName;
     protected $viewFolderPath;
     protected $layoutFile;
+    protected $noLayout = false;
 
     private $actualDir;
 
@@ -33,9 +34,16 @@ class ControllerHTML extends ControllerBase {
                                                  $action.'.phtml');
             $view->setViewFile($fpath);
         }
-        $this->layoutView->action = $action;
-        $this->layoutView->content = $view->return_output();
-        $this->layoutView->render();
+        if ($this->noLayout) {
+            $view->render();
+        } else {
+            $this->layoutView->action = $action;
+            $this->layoutView->content = $view->return_output();
+            $this->layoutView->render();
+        }
+    }
+    public function setNoLayout($noLayout=true) {
+        $this->noLayout = $noLayout;
     }
 }
 
