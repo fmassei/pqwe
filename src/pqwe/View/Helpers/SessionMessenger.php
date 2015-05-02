@@ -37,7 +37,7 @@ class SessionMessenger {
         if ($key===null)
             unset($_SESSION[self::SESSIONKEY]);
         else if (isset($_SESSION[self::SESSIONKEY][$key])
-            unset(isset($_SESSION[self::SESSIONKEY][$key]);
+            unset($_SESSION[self::SESSIONKEY][$key]);
     }
 }
 
