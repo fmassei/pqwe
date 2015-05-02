@@ -11,6 +11,15 @@ class SessionMessenger {
             $_SESSION[self::SESSIONKEY][$key] = array();
         $_SESSION[self::SESSIONKEY][$key][] = $message;
     }
+    public function addMessageSuccess($message) {
+        $this->addMessage($message, 'success');
+    }
+    public function addMessageWarning($message) {
+        $this->addMessage($message, 'warning');
+    }
+    public function addMessageError($message) {
+        $this->addMessage($message, 'error');
+    }
     public function getMessages($key=null) {
         if (!isset($_SESSION[self::SESSIONKEY]))
             return array();
@@ -22,14 +31,13 @@ class SessionMessenger {
             return $_SESSION[self::SESSIONKEY][$key];
         }
     }
-    public function addMessageSuccess($message) {
-        $this->addMessage($message, 'success');
-    }
-    public function addMessageWarning($message) {
-        $this->addMessage($message, 'warning');
-    }
-    public function addMessageError($message) {
-        $this->addMessage($message, 'error');
+    public function clearMessages($key=null) {
+        if (!isset($_SESSION[self::SESSIONKEY]))
+            return;
+        if ($key===null)
+            unset($_SESSION[self::SESSIONKEY]);
+        else if (isset($_SESSION[self::SESSIONKEY][$key])
+            unset(isset($_SESSION[self::SESSIONKEY][$key]);
     }
 }
 
