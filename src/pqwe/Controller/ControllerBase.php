@@ -37,14 +37,17 @@ class ControllerBase {
                 $ret[$str] = true;
         return $ret;
     }
-    protected function sendFileAttachment($file, $mime, $filename=null) {
-        if ($filename===null)
-            $filename = basename($file);
+    protected function sendStringAttachment($str, $mime, $filename) {
         header("Content-type: $mime");
         header('Content-Disposition: attachment; filename="'.$filename.'";');
         header('Content-Transfer-Encoding: binary');
-        echo file_get_contents($file);
+        echo $str;
         exit();
+    }
+    protected function sendFileAttachment($file, $mime, $filename=null) {
+        if ($filename===null)
+            $filename = basename($file);
+        $this->sendStringAttachment(file_get_contents($file),$mime,$filename);
     }
 }
 
