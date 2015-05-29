@@ -1,7 +1,22 @@
 <?php
+/**
+ * Namespaces class
+ */
 namespace pqwe\Utils;
 
+/**
+ * Namespaces class
+ *
+ * Tought for internal use only, helps with namespace mangling
+ */
 class Namespaces {
+    /**
+     * returns the first namespace of a namespace chain
+     *
+     * @static
+     * @param string $class The class name with namespaces
+     * @return string
+     */
     public static function getFirst($class) {
         if ($class[0]=='\\')
             $class = substr($class, 1);

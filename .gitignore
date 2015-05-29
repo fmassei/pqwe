@@ -1,2 +1,4 @@
 .*.swp
 test/
+docs/
+phpDocumentor.phar

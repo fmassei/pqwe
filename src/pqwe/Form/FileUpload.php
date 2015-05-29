@@ -1,11 +1,33 @@
 <?php
+/**
+ * FileUpload class
+ */
 namespace pqwe\Form;
 
 use \pqwe\Exception\PqweUploadException;
 
+/**
+ * FileUpload class
+ *
+ * static class that helps dealing with file uploads.
+ */
 class FileUpload {
-    public static function getFileObj($fieldName, $maxSize=0,
-                                      $acceptedMimeTypes=null)
+    /**
+     * getFileObj
+     *
+     * Takes a $_FILES entry and perform various checks, like if there was
+     * an error during the transfer, if the mime type is correct, and so on.
+     *
+     * @static
+     * @param string $fieldName The key of the $_FILES array
+     * @param int $maxSize=0 Maximum file size, 0 for no limit
+     * @param array $acceptedMimeTypes=null Array of mime types to accept,
+     * null for no checks
+     * @return array The raw $_FILES entry
+     * @throws PqweUploadException
+     */
+    protected static function getFileObj($fieldName, $maxSize=0,
+                                         $acceptedMimeTypes=null)
     {
         $file = $_FILES[$fieldName];
         if (!isset($file['error']) || is_array($file['error']))
@@ -32,6 +54,20 @@ class FileUpload {
         }
         return $file;
     }
+    /**
+     * getUploadedFile
+     *
+     * like move_uploaded_file, but with extra checks.
+     *
+     * @static
+     * @param string $fieldName The key in the $_FILES array
+     * @param string $outFile The name of the final file
+     * @param int $maxSize=0 Maximum file size, 0 for no limit
+     * @param array $acceptedMimeTypes=null Array of mime types to accept,
+     * null for no checks
+     * @return void
+     * @throws PqweUploadException
+     */
     public static function getUploadedFile($fieldName, $outFile, $maxSize=0,
                                            $acceptedMimeTypes=null)
     {
