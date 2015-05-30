@@ -20,8 +20,8 @@ class FileUpload {
      *
      * @static
      * @param string $fieldName The key of the $_FILES array
-     * @param int $maxSize=0 Maximum file size, 0 for no limit
-     * @param array $acceptedMimeTypes=null Array of mime types to accept,
+     * @param int $maxSize Maximum file size, 0 for no limit
+     * @param array $acceptedMimeTypes Array of mime types to accept,
      * null for no checks
      * @return array The raw $_FILES entry
      * @throws PqweUploadException
@@ -62,8 +62,8 @@ class FileUpload {
      * @static
      * @param string $fieldName The key in the $_FILES array
      * @param string $outFile The name of the final file
-     * @param int $maxSize=0 Maximum file size, 0 for no limit
-     * @param array $acceptedMimeTypes=null Array of mime types to accept,
+     * @param int $maxSize Maximum file size, 0 for no limit
+     * @param array $acceptedMimeTypes Array of mime types to accept,
      * null for no checks
      * @return void
      * @throws PqweUploadException
