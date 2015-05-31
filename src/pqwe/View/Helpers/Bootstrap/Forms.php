@@ -1,7 +1,24 @@
 <?php
+/**
+ * Forms class
+ */
 namespace pqwe\View\Helpers\Bootstrap;
 
+/**
+ * class for rendering form fields
+ */
 class Forms {
+    /**
+     * Return the rendered text field
+     *
+     * @param string $label Field label
+     * @param string $name "name" attribute, also used for the "id" attribute
+     * @param string $value Initial field value
+     * @param bool $hasError If the field has to be marked an containing an
+     * error
+     * @param string $placeHolder The "placeholder" attribute
+     * @return string
+     */
     public function renderText($label, $name, $value, $hasError, $placeholder=null) {
         $class = "form-group".($hasError?" has-error has-feedback":"");
         $errorId = $name.'Error';
@@ -19,6 +36,18 @@ EOL;
         $ret .= '</div>';
         return $ret;
     }
+
+    /**
+     * Return the rendered textarea field
+     *
+     * @param string $label Field label
+     * @param string $name "name" attribute, also used for the "id" attribute
+     * @param string $value Initial field value
+     * @param bool $hasError If the field has to be marked an containing an
+     * error
+     * @param int $rows "rows" attribute
+     * @return string
+     */
     public function renderTextarea($label, $name, $value, $hasError, $rows=10) {
         $class = "form-group".($hasError?" has-error has-feedback":"");
         $errorId = $name.'Error';
@@ -35,6 +64,19 @@ EOL;
         $ret .= '</div>';
         return $ret;
     }
+
+    /**
+     * Return the rendered select field
+     *
+     * @param array $options An array of objects containing the "id" and "name"
+     * properties
+     * @param int $selectedId The id to be selected by default
+     * @param string $name "name" attribute, also used for the "id" attribute
+     * @param bool $zeroCat If true, add an empty option on top the select
+     * @param bool $withButton If true, adds an extra button after the select
+     * @param string $extraAttrs Extra attributes to add to the select
+     * @return string
+     */
     public function renderSelect($options, $selectedId, $name, $zeroCat=false, $withButton=false, $extraAttrs='') {
         $ret = '';
         if ($withButton)

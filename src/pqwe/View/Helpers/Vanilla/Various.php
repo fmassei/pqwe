@@ -1,7 +1,19 @@
 <?php
+/**
+ * Various class
+ */
 namespace pqwe\View\Helpers\Vanilla;
 
+/**
+ * view helpers for various operations
+ */
 class Various {
+    /**
+     * return the rendered passed SessionMessenger
+     *
+     * @param \pqwe\View\Helpers\SessionMessenger $sessionMessenger
+     * @return string
+     */
     public function renderSessionMessenger($sessionMessenger) {
         $messages = $sessionMessenger->getMessages();
         $ret = "";
