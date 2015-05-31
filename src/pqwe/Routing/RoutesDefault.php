@@ -95,6 +95,8 @@ class RoutesDefault {
      * low-level redirection to another page
      *
      * If in a controller, use the controller member instead.
+     * @see \pqwe\Controller\ControllerBase::redirect
+     *
      * @param string $page The URL to redirect to.
      * @param int $code The HTTP response code to send to the client
      * @param string $schema The schema to use, null to use the current one
