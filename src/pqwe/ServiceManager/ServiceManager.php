@@ -62,7 +62,9 @@ class ServiceManager {
             return $this->instances[$what];
         /* invokables */
         if (isset($this->invokables[$what])) {
-            $className = (($what[0]!="\\")?"\\":"").$this->invokables[$what];
+            $className = $this->invokables[$what];
+            if ($className[0]!="\\")
+                $className = "\\".$className;
             $instance = new $className();
             $instance->serviceManager = $this;
             if (isset($this->shared[$what]) && $this->shared[$what]===false)
@@ -72,7 +74,9 @@ class ServiceManager {
         }
         /* factories */
         if (isset($this->factories[$what])) {
-            $className = (($what[0]!="\\")?"\\":"").$this->factories[$what];
+            $className = $this->factories[$what];
+            if ($className[0]!="\\")
+                $className = "\\".$className;
             $factory = new $className();
             $instance = $factory->create($this);
             if (isset($this->shared[$what]) && $this->shared[$what]===false)
