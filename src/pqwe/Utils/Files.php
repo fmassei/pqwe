@@ -13,7 +13,6 @@ class Files {
     /**
      * makes a path out of the parts passed
      *
-     * @static
      * @param mixed ... The path parts to be joined
      * @return string
      */

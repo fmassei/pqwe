@@ -7,13 +7,12 @@ namespace pqwe\Utils;
 /**
  * Namespaces class
  *
- * Tought for internal use only, helps with namespace mangling
+ * Thought for internal use only, helps with namespace mangling
  */
 class Namespaces {
     /**
      * returns the first namespace of a namespace chain
      *
-     * @static
      * @param string $class The class name with namespaces
      * @return string
      */
