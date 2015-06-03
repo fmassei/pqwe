@@ -8,7 +8,68 @@ use \pqwe\Exception\PqweServiceManagerException;
 
 /**
  * The ServiceManager keeps the application configuration, returns objects
- * creating them on demand, and @todo.
+ * creating them on demand, and much more.
+ *
+ * The ServiceManager is one of the main objects of pqwe, typically created once
+ * at the beginning of the application and passed to (or automatically injected
+ * in) all the objects around the application. Using it is extremely simple.
+ *
+ * ### Construct the ServiceManager
+ * To create a ServiceManager instance you need to pass the "configuration"
+ *
+ *      $serviceManager = new ServiceManager($config);
+ *
+ * where the configuration is an array. You can get all the configuration
+ * back asking for the key "config".
+ *
+ *      $config = $serviceManager->get("config");
+ *
+ * ### Set the ServiceManager up
+ * The ServiceManager will use the "service_manager" entry in the configuration
+ * to know how to work. This entry looks like:
+ *
+ *      'service_manager' => array(
+ *          'invokables' => array(
+ *              NAME => CLASSNAME,
+ *              NAME => CLASSNAME,
+ *              ...
+ *          ),
+ *          'factories' => array(
+ *              NAME => CLASSNAME,
+ *              ...
+ *          ),
+ *          'shared' => array(
+ *              NAME => true|false,
+ *              ...
+ *          )
+ *      )
+ *
+ * when the get($NAME) method is called, the ServiceManager will look in this
+ * array to find the association between the passed name and the class.
+ *
+ * ### Objects creation
+ * The ServiceManager will keep instances of the requested objects for future
+ * requests, hence creating an object with a given name just once. You can
+ * see it as an object cache, if you want to.
+ *
+ * Depending on where the association is, the ServiceManager will act
+ * differently:
+ * - invokables: the associated class will be created calling a constructor
+ *   with no parameters, the ServiceManager instance injected in the new object,
+ *   and the object cached for later requests.
+ * - factories: the associated class will be created calling a constructor
+ *   with no parameters, the method create($serviceManager) of the new object
+ *   called, and its return value (which will be the constructed object)
+ *   cached.
+ *   Even if the ServiceManager will not check, is a good idea for the factory
+ *   class to implement {@see \pqwe\Factory\FactoryInterface}.
+ * - shared: any name present in the "shared" array with a "false" value will
+ *   skip the caching process, giving you always new objects. By default all
+ *   the objects are shared.
+ *
+ * ### Manually setting objects
+ * If you want to, you can also set an object instance manually inside the
+ * ServiceManager, with the set() method.
  */
 class ServiceManager {
     /** @var array $instances Cached object instances */
