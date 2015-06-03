@@ -20,7 +20,7 @@ class DbAdapterPDO implements IDb {
      *
      * creates a PDO object, connecting to the db.
      *
-     * @param string $dns DSN
+     * @param string $dsn DSN
      * @param string $username Username
      * @param string $password Password
      * @param string $options Options to pass to the PDO constructor

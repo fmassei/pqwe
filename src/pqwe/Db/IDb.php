@@ -5,7 +5,7 @@
 namespace pqwe\Db;
 
 /**
- * interface for database wrappers
+ * interface for database adapters
  *
  * Each class implementing this interface will also have a public property
  * reflecting the underlaying db object. The whole point of having an
