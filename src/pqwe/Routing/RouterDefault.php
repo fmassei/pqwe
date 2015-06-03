@@ -9,7 +9,7 @@ use pqwe\Exception\PqweRoutingException;
 /**
  * default class to parse the routes
  */
-class RouterDefault {
+class RouterDefault implements IRouter {
     /**
      * @var \pqwe\ServiceManager\ServiceManager $serviceManager A ServiceManager
      * instance
@@ -45,11 +45,15 @@ class RouterDefault {
      *
      * Returns a route matching the current URL, or throws an exception
      *
+     * @param string $url The URL to match, empty for current
      * @return \pqwe\Routing\RouteMatch
      * @throws \pqwe\Exception\PqweRoutingException
      */
-    public function match() {
-        $cleanUrl = '/'.implode('/', $this->routes->getParts());
+    public function match($url="") {
+        if ($url!='')
+            $cleanUrl = $url;
+        else
+            $cleanUrl = '/'.implode('/', $this->routes->getParts());
         foreach($this->def as $route) {
             switch ($route['type']) {
             case 'exact':
