@@ -4,6 +4,8 @@
  */
 namespace pqwe\MVC;
 
+use pqwe\Exception\pqweACLException;
+
 /**
  * Main MVC class
  */
@@ -23,6 +25,36 @@ class MVC {
     }
 
     /**
+     * Check, if ACL is on, if the route is allowed for the role
+     *
+     * @param \pqwe\Routing\RouteMatch $routeMatch Route to check
+     * @param string $acl_role Role to check
+     * @return void
+     */
+    protected function checkAuth(&$routeMatch, $acl_role) {
+        if (!isset($routeMatch->rawRoute['resource']))
+            return;
+        $config = $this->serviceManager->get('config');
+        if (!isset($config['acl']))
+            return;
+        $resource = $routeMatch->rawRoute['resource'];
+        $privilege = null;
+        if (isset($routeMatch->rawRoute['privilege']))
+            $privilege = $routeMatch->rawRoute['privilege'];
+        $acl = $this->serviceManager->getOrGetDefault('pqwe_acl');
+        if ($acl_role===null)
+            $acl_role = $acl->getDefaultRoleName();
+        if (!$acl->isAllowed($acl_role, $resource, $privilege)) {
+            if (isset($config['acl']['unauthorized'])) {
+                $routeMatch->controller = $config['acl']['unauthorized']['controller'];
+                $routeMatch->action = $config['acl']['unauthorized']['action'];
+            } else {
+                throw new pqweACLException('unauthorized');
+            }
+        }
+    }
+
+    /**
      * Run the MVC process
      * 
      * This function uses the transparent "pqwe_router" object, taking the
@@ -32,11 +64,13 @@ class MVC {
      * order, its "preAction()" method, the action method associated with the
      * route, and finally its "postAction()" method.
      * 
+     * @param string $acl_role If set, and if using ACLs, check with this role.
      * @return void
      */
-    public function run() {
+    public function run($acl_role=null) {
         $router = $this->serviceManager->getOrGetDefault('pqwe_router');
         $routeMatch = $router->match();
+        $this->checkAuth($routeMatch, $acl_role);
         $controllerClass = $routeMatch->controller;
         $controller = new $controllerClass($this->serviceManager);
         $controller->preAction($routeMatch);

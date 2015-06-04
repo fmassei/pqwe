@@ -185,6 +185,10 @@ class ServiceManager {
                                                              $routes);
             $this->set($what, $router);
             break;
+        case 'pqwe_acl':
+            $acl = new \pqwe\ACL\ACL($this);
+            $this->set($what, $acl);
+            break;
         default:
             throw new PqweServiceManagerException("internal calss '$what' not found");
         }

@@ -9,9 +9,9 @@ namespace pqwe\ACL;
  */
 class Role {
     /** @var string $name The name of the role */
-    protected $name;
+    public $name;
     /** @var array $parents Role parents */
-    protected $parents;
+    public $parents;
 
     /**
      * constructor

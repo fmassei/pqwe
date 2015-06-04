@@ -8,6 +8,9 @@ namespace pqwe\ACL;
  * ACL (Access Control List) class
  */
 class ACL {
+    /** @var \pqwe\ServiceManager\ServiceManager $serviceManager A
+    * ServiceManager instance */         
+    protected $serviceManager;
     /** @var array $roles List of roles */
     protected $roles;
     /** @var array $resources List of resources */
@@ -15,10 +18,31 @@ class ACL {
 
     /**
      * constructor
+     *
+     * @param \pqwe\ServiceManager\ServiceManager $serviceManager A
+     * ServiceManager instance
      */
-    public function __construct() {
+    public function __construct($serviceManager) {
+        $this->serviceManager = $serviceManager;
         $this->roles = array();
         $this->resources = array();
+        $config = $this->serviceManager->get('config');
+        if (!isset($config['acl']))
+            return;
+        if (isset($config['acl']['roles']))
+            foreach($config['acl']['roles'] as $name=>$parents)
+                $this->addRole($name, $parents);
+        if (isset($config['acl']['resources']))
+            foreach($config['acl']['resources'] as $name=>$parent)
+                $this->addResource($name, $parent);
+        if (isset($config['acl']['allow']))
+            foreach ($config['acl']['allow'] as $name=>$rp)
+                foreach ($rp as $resource=>$privileges)
+                    $this->allow($name, $resource, $privileges);
+        if (isset($config['acl']['deny']))
+            foreach ($config['acl']['deny'] as $name=>$rp)
+                foreach ($rp as $resource=>$privileges)
+                    $this->deny($name, $resource, $privileges);
     }
 
     /**
@@ -37,7 +61,7 @@ class ACL {
      * From a name, return a Resource, or null
      *
      * @param string $resourceName Name of the Role
-     * @return \pqwe\ACL\Resource|null
+        * @return \pqwe\ACL\Resource|null
      */
     protected function name2resource($resourceName) {
         if (!isset($this->resources[$resourceName]))
@@ -104,6 +128,18 @@ class ACL {
         $this->resources[$resourceName]->addRole($roleName, false, $privileges);
     }
 
+    /**
+     * Get the default role name
+     *
+     * The default role is just the first role added.
+     *
+     * @return string
+     */
+    public function getDefaultRoleName() {
+        if (count($this->roles)<=0)
+            return '';
+        return reset($this->roles)->name;
+    }
 
     /**
      * Check if a role is allowed to access a resource with a certain privilege

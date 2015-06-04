@@ -62,7 +62,8 @@ class RouterDefault implements IRouter {
                                                       : array();
                     return new RouteMatch($route['controller'],
                                           $route['action'],
-                                          $params);
+                                          $params,
+                                          $route);
                 }
                 break;
             case 'regexp':
@@ -82,7 +83,8 @@ class RouterDefault implements IRouter {
                         throw new PqweRoutingException('no action');
                     return new RouteMatch($route['controller'],
                                           $action,
-                                          $params);
+                                          $params,
+                                          $route);
                 }
                 break;
             case 'custom':
