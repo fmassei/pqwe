@@ -73,6 +73,32 @@ EOL;
     }
 
     /**
+     * Return the rendered password field
+     *
+     * @param string $label Field label
+     * @param string $name "name" attribute, also used for the "id" attribute
+     * @param string $value Initial field value
+     * @param bool $hasError If the field has to be marked an containing an
+     * error
+     * @param string $placeHolder The "placeholder" attribute
+     * @return string
+     */
+    public function renderPassword($label, $name, $value, $hasError, $placeholder=null) {
+        $class = $hasError?'error':'';
+        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        if ($this->tableMode) {
+            $bb = '<tr><td>'; $bs = '</td><td>'; $be = '</td></tr>';
+        } else {
+            $bb = $bs = $be = '';
+        }
+        $ret = <<<EOL
+            {$bb}<label for="{$name}">{$label}</label>{$bs}
+            <input class="{$class}" type="password" value="{$value}" name="{$name}" id="{$name}"{$ph}>{$be}
+EOL;
+        return $ret;
+    }
+
+    /**
      * Return the rendered select field
      *
      * @param string $label Field label

@@ -66,6 +66,35 @@ EOL;
     }
 
     /**
+     * Return the rendered password field
+     *
+     * @param string $label Field label
+     * @param string $name "name" attribute, also used for the "id" attribute
+     * @param string $value Initial field value
+     * @param bool $hasError If the field has to be marked an containing an
+     * error
+     * @param string $placeHolder The "placeholder" attribute
+     * @return string
+     */
+    public function renderPassword($label, $name, $value, $hasError, $placeholder=null) {
+        $class = "form-group".($hasError?" has-error has-feedback":"");
+        $errorId = $name.'Error';
+        $describedBy = $hasError?' aria-describedby='.$errorId:'';
+        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        $ret = <<<EOL
+            <div class="{$class}">
+            <label class="control-label" for="{$name}">{$label}</label>
+            <input class="form-control" type="password" value="{$value}" name="{$name}" id="{$name}"{$describedBy}{$ph}>
+EOL;
+        if ($hasError)
+            $ret .= <<<EOL
+                <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span><span id="{$errorId}" class="sr-only">(error)</span>
+EOL;
+        $ret .= '</div>';
+        return $ret;
+    }
+
+    /**
      * Return the rendered select field
      *
      * @param array $options An array of objects containing the "id" and "name"
