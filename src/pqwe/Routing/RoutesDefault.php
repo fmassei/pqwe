@@ -92,6 +92,18 @@ class RoutesDefault {
     }
 
     /**
+     * return the full URL of the current page
+     *
+     * @return string
+     */
+    public function getFullURL()
+    {
+        $schema = $this->getSchema();
+        $host = $this->getHost();
+        return $schema.'://'.$host.$_SERVER['REQUEST_URI'];
+    }
+
+    /**
      * low-level redirection to another page
      *
      * If in a controller, use the controller member instead.
