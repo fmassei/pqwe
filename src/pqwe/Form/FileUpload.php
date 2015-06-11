@@ -26,8 +26,8 @@ class FileUpload {
      * @return array The raw $_FILES entry
      * @throws PqweUploadException
      */
-    protected static function getFileObj($fieldName, $maxSize=0,
-                                         $acceptedMimeTypes=null)
+    public static function getFileObj($fieldName, $maxSize=0,
+                                      $acceptedMimeTypes=null)
     {
         $file = $_FILES[$fieldName];
         if (!isset($file['error']) || is_array($file['error']))
