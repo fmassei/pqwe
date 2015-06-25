@@ -136,8 +136,8 @@ class FileUpload {
      * @return void
      * @throws PqweUploadException
      */
-    public static function getUploadedFile($fieldName, $outFiles, $maxSize=0,
-                                           $acceptedMimeTypes=null)
+    public static function getUploadedFiles($fieldName, $outFiles, $maxSize=0,
+                                            $acceptedMimeTypes=null)
     {
         if (count($outFiles)<count($_FILES[$fieldName]['name']))
             throw new PqweUploadException('Too few names');
