@@ -71,9 +71,11 @@ class MVC {
         $router = $this->serviceManager->getOrGetDefault('pqwe_router');
         $routeMatch = $router->match();
         $this->checkAuth($routeMatch, $acl_role);
-        $controllerClass = $routeMatch->controller;
-        $controller = new $controllerClass($this->serviceManager);
-        $controller->preAction($routeMatch);
+        do {
+            $controllerClass = $routeMatch->controller;
+            $controller = new $controllerClass($this->serviceManager);
+            $controller->preAction($routeMatch);
+        } while ($routeMatch->controller!=$controllerClass);
         $view = call_user_func_array(array($controller,
                                            $routeMatch->action.'Action'),
                                      $routeMatch->params);
