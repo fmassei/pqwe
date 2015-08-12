@@ -4,7 +4,8 @@
  */
 namespace pqwe\MVC;
 
-use pqwe\Exception\pqweACLException;
+use pqwe\Exception\PqweACLException;
+use pqwe\Exception\PqweMVCException;
 
 /**
  * Main MVC class
@@ -49,7 +50,7 @@ class MVC {
                 $routeMatch->controller = $config['acl']['unauthorized']['controller'];
                 $routeMatch->action = $config['acl']['unauthorized']['action'];
             } else {
-                throw new pqweACLException('unauthorized');
+                throw new PqweACLException('unauthorized');
             }
         }
     }
@@ -76,8 +77,11 @@ class MVC {
             $controller = new $controllerClass($this->serviceManager);
             $controller->preAction($routeMatch);
         } while ($routeMatch->controller!=$controllerClass);
+        $method = $routeMatch->action.'Action';
+        if (!method_exists($controller, $method))
+            throw new PqweMVCException("method $method doesn't exist in class $controllerClass");
         $view = call_user_func_array(array($controller,
-                                           $routeMatch->action.'Action'),
+                                           $method),
                                      $routeMatch->params);
         $controller->postAction($view, $routeMatch->action);
     }
