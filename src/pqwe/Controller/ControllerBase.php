@@ -119,6 +119,64 @@ class ControllerBase {
     }
 
     /**
+     * check is a $_GET[] entry is set and it's trim() is not empty
+     *
+     * @param string $name Name of the entry
+     * @return bool
+     */
+    protected function isGETfilled($name) {
+        return isset($_GET[$name]) && trim($_GET[$name])!="";
+    }
+    /**
+     * returns trim($_GET[$name]) if the entry is set, or an empty string
+     * otherwise
+     *
+     * @param string $name Name of the entry
+     * @return string
+     */
+    protected function getGETstr($name) {
+        return (!isset($_GET[$name]))?"":trim($_GET[$name]);
+    }
+    /**
+     * returns trim($_GET[$name]) if the entry is set, or null otherwise
+     *
+     * @param string $name Name of the entry
+     * @return null|string
+     */
+    protected function getGETnull($name) {
+        $str = $this->getGETstr($name);
+        return ($str=="") ? null : $str;
+    }
+    /**
+     * returns $_GET[$name] if the entry is set, or $default otherwise
+     *
+     * @param string $name Name of the entry
+     * @param mixed $default Value to return if the entry is not set
+     * @return mixed
+     */
+    protected function getGETdefault($name, $default=null) {
+        return isset($_GET[$name]) ? $_GET[$name] : $default;
+    }
+    /**
+     * for each passed argument, checks if the entry in $_GET is set, and if
+     * not set a key with same name in the returning array
+     *
+     * For example: if our $_GET array containes the keys 'a', 'b' and 'c',
+     * and we call getGETemptyArray('a','c','d'), the returned array will
+     * be ('d'=>true).
+     *
+     * @param ... String(s) to be checked
+     * @return array
+     */
+    protected function getGETemptyArray() {
+        $ret = array();
+        foreach(func_get_args() as $str)
+            if (!$this->isGETfilled($str))
+                $ret[$str] = true;
+        return $ret;
+    }
+
+    /**
      * short-circuit the entire MVC flow and just return the passed string as an
      * attachment
      *

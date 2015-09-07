@@ -48,7 +48,7 @@ class ControllerAjax extends ControllerBase {
     protected function execute() {
         if (($ajaxAction = $this->getPOSTdefault('action'))===null)
             throw new \Exception('invalid action');
-        $method = $ajaxAction.'AjaxAction';
+        $method = $ajaxAction;
         if (!method_exists($this, $method))
             throw new \Exception("method $method not present");
         $response = call_user_func(array($this, $method));
