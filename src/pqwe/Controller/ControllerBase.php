@@ -61,7 +61,7 @@ class ControllerBase {
         $routes->redirect($page, $code, $schema);
     }
     /**
-     * check is a $_POST[] entry is set and it's trim() is not empty
+     * check if a $_POST[] entry is set and its trim() is not empty
      *
      * @param string $name Name of the entry
      * @return bool
@@ -119,7 +119,7 @@ class ControllerBase {
     }
 
     /**
-     * check is a $_GET[] entry is set and it's trim() is not empty
+     * check if a $_GET[] entry is set and its trim() is not empty
      *
      * @param string $name Name of the entry
      * @return bool
