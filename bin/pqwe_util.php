@@ -76,6 +76,10 @@ command:
         return $ui;
     }
     private function mkdir($name) {
+        if (is_dir($name)===true) {
+            echo "- directory already exists\n";
+            return;
+        }
         if (@mkdir($name)===false)
             throw new \Exception("could not create dir $name");
         echo "- created directory '$name'\n";
