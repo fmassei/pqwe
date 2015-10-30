@@ -190,7 +190,7 @@ class ServiceManager {
             $this->set($what, $acl);
             break;
         default:
-            throw new PqweServiceManagerException("internal calss '$what' not found");
+            throw new PqweServiceManagerException("internal class '$what' not found");
         }
         return $this->get($what);
     }
