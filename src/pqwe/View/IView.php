@@ -24,6 +24,15 @@ interface IView {
     public function setViewFile($file);
 
     /**
+     * Assign a named variable to the view.
+     *
+     * @param string $name Name of the variable
+     * @param mixed $val Value of the variable
+     * @return void
+     */
+    public function assign($name, $val);
+
+    /**
      * echo the view contents
      *
      * @return void

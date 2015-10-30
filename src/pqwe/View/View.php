@@ -46,6 +46,20 @@ class View implements IView {
     }
 
     /**
+     * Assign a named variable to the view.
+     *
+     * It's also possible to just set the variable dynamically to the View
+     * object, without calling this function at all.
+     *
+     * @param string $name Name of the variable
+     * @param mixed $val Value of the variable
+     * @return void
+     */
+    public function assign($name, $val) {
+        $this->$name = $val;
+    }
+
+    /**
      * Associate the view with the passed string
      *
      * @param string $str The raw_content to set

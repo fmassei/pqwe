@@ -9,7 +9,7 @@ namespace pqwe\ServiceManager;
  * ServiceManager
  */
 class Service {
-    /** @var \pqwe\ServiceManager\ServiceManager $serviceManager */
+    /** @var \pqwe\ServiceManager\ServiceManager $serviceManager the serviceManager */
     protected $serviceManager;
 }
 
