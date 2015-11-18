@@ -19,7 +19,7 @@ class MVC {
     /**
      * constructor
      *
-     * @param ServiceManager $serviceManager The ServiceManager instance
+     * @param \pqwe\ServiceManager\ServiceManager $serviceManager
      */
     public function __construct($serviceManager) {
         $this->serviceManager = $serviceManager;
