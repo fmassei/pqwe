@@ -21,7 +21,8 @@ class Files {
         for ($i=0; $i<count($arr)-1; ++$i) {
             if ($arr[$i]===null || $arr[$i]=="")
                 continue;
-            if ($arr[$i][strlen($arr[$i])-1]!=DIRECTORY_SEPARATOR)
+            if (    $arr[$i][strlen($arr[$i])-1]!=DIRECTORY_SEPARATOR &&
+                    $arr[$i+1][0]!=DIRECTORY_SEPARATOR)
                 $arr[$i] .= DIRECTORY_SEPARATOR;
         }
         return implode('', $arr);
@@ -42,6 +43,7 @@ class Files {
      * fragmentation
      * @param int $newDirMode Permission to pass to mkdir when creating
      * a new folder
+     * @throws PqweException
      * @return string
      */
     public static function prepareFragmented($filename, $basePath, $nPrefix=3, $newDirMode=0777) {
