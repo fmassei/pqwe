@@ -38,7 +38,7 @@ class Mailer {
      * @param string $file The file path
      * @return bool The result of the mail() function
      */
-    public function sendMultipart($to, $subject, $message, $from, $file) {
+    public static function sendMultipart($to, $subject, $message, $from, $file) {
         $filename = basename($file);
         $file_size = filesize($file);
         $file_content = file_get_contents($file);
