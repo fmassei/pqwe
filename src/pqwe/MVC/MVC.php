@@ -30,6 +30,7 @@ class MVC {
      *
      * @param \pqwe\Routing\RouteMatch $routeMatch Route to check
      * @param string|array $acl_roles Role(s) to check
+     * @throws PqweACLException
      * @return void
      */
     protected function checkAuth(&$routeMatch, $acl_roles) {
@@ -67,6 +68,8 @@ class MVC {
      * 
      * @param string|array $acl_role If set, and if using ACLs, check with this
      *  role or array of roles.
+     * @throws PqweMVCException
+     * @throws PqweACLException
      * @return void
      */
     public function run($acl_role=null) {

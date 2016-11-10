@@ -149,13 +149,13 @@ class ACL {
      * @param string|array $privileges Name or list of privileges
      * @return bool
      */
-    protected function isAllowed_role($roleName, $resourceName, $privilege=null) {
+    protected function isAllowed_role($roleName, $resourceName, $privileges=null) {
         if (    !isset($this->resources[$resourceName]) ||
                 !isset($this->roles[$roleName]))
             return false;
         $resource = $this->resources[$resourceName];
         $role = $this->roles[$roleName];
-        return $role->isResourceAllowed($resource, $privilege);
+        return $role->isResourceAllowed($resource, $privileges);
     }
 
     /**
@@ -167,12 +167,12 @@ class ACL {
      * @param string|array $privileges Name or list of privileges
      * @return bool
      */
-    public function isAllowed($roleNames, $resourceName, $privilege=null) {
+    public function isAllowed($roleNames, $resourceName, $privileges=null) {
         if (is_string($roleNames)) {
-            return $this->isAllowed_role($roleNames, $resourceName, $privilege);
+            return $this->isAllowed_role($roleNames, $resourceName, $privileges);
         } else if (is_array($roleNames)) {
             foreach ($roleNames as $roleName)
-                if ($this->isAllowed_role($roleName, $resourceName, $privilege))
+                if ($this->isAllowed_role($roleName, $resourceName, $privileges))
                     return true;
             return false;
         } else {
