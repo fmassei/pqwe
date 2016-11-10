@@ -149,13 +149,35 @@ class ACL {
      * @param string|array $privileges Name or list of privileges
      * @return bool
      */
-    public function isAllowed($roleName, $resourceName, $privilege=null) {
+    protected function isAllowed_role($roleName, $resourceName, $privilege=null) {
         if (    !isset($this->resources[$resourceName]) ||
                 !isset($this->roles[$roleName]))
             return false;
         $resource = $this->resources[$resourceName];
         $role = $this->roles[$roleName];
         return $role->isResourceAllowed($resource, $privilege);
+    }
+
+    /**
+     * Check if a role or an array of roles is allowed to access a resource
+     * with a certain privilege
+     *
+     * @param string|array $roleNames Name of the role(s)
+     * @param string $resourceName Name of the resource
+     * @param string|array $privileges Name or list of privileges
+     * @return bool
+     */
+    public function isAllowed($roleNames, $resourceName, $privilege=null) {
+        if (is_string($roleNames)) {
+            return $this->isAllowed_role($roleNames, $resourceName, $privilege);
+        } else if (is_array($roleNames)) {
+            foreach ($roleNames as $roleName)
+                if ($this->isAllowed_role($roleName, $resourceName, $privilege))
+                    return true;
+            return false;
+        } else {
+            return false;
+        }
     }
 }
 

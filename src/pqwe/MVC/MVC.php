@@ -29,10 +29,10 @@ class MVC {
      * Check, if ACL is on, if the route is allowed for the role
      *
      * @param \pqwe\Routing\RouteMatch $routeMatch Route to check
-     * @param string $acl_role Role to check
+     * @param string|array $acl_roles Role(s) to check
      * @return void
      */
-    protected function checkAuth(&$routeMatch, $acl_role) {
+    protected function checkAuth(&$routeMatch, $acl_roles) {
         if (!isset($routeMatch->rawRoute['resource']))
             return;
         $config = $this->serviceManager->get('config');
@@ -43,9 +43,9 @@ class MVC {
         if (isset($routeMatch->rawRoute['privilege']))
             $privilege = $routeMatch->rawRoute['privilege'];
         $acl = $this->serviceManager->getOrGetDefault('pqwe_acl');
-        if ($acl_role===null)
-            $acl_role = $acl->getDefaultRoleName();
-        if (!$acl->isAllowed($acl_role, $resource, $privilege)) {
+        if ($acl_roles===null)
+            $acl_roles = $acl->getDefaultRoleName();
+        if (!$acl->isAllowed($acl_roles, $resource, $privilege)) {
             if (isset($config['acl']['unauthorized'])) {
                 $routeMatch->controller = $config['acl']['unauthorized']['controller'];
                 $routeMatch->action = $config['acl']['unauthorized']['action'];
@@ -65,7 +65,8 @@ class MVC {
      * order, its "preAction()" method, the action method associated with the
      * route, and finally its "postAction()" method.
      * 
-     * @param string $acl_role If set, and if using ACLs, check with this role.
+     * @param string|array $acl_role If set, and if using ACLs, check with this
+     *  role or array of roles.
      * @return void
      */
     public function run($acl_role=null) {
