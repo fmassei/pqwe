@@ -24,7 +24,6 @@ class DbAdapterPDO implements IDb {
      * @param string $username Username
      * @param string $password Password
      * @param string $options Options to pass to the PDO constructor
-     * @return void
      */
     public function __construct($dsn, $username, $password, $options)
     {
@@ -49,27 +48,13 @@ class DbAdapterPDO implements IDb {
         return $info[2];
     }
 
-    /*private function getBTStr($arr)
-    {
-        $ret = '';
-        foreach($arr as $a) {
-            $f = explode('/', $a['file']);
-            $ret .= $f[count($f)-2]."/".$f[count($f)-1].":".$a['line'].'('.$a['function'].')';
-        }
-        return $ret;
-    }*/
     /**
      * execute a query
      *
      * @param string $str Query
      * @return \PDOStatement A database-specific result set
-     * @todo find another way to activate query debugging
      */
     public function query($str) {
-        /*if (($ret = $this->pdo->query($str))===false) {
-            error_log("query failed: ".str_replace("\n"," ",$str)." [err: ".$this->getErrorString()."]");
-        }
-        return $ret;*/
         return $ret = $this->pdo->query($str);
     }
 

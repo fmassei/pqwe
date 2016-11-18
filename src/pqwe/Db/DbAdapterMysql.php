@@ -26,7 +26,6 @@ class DbAdapterMysql implements IDb {
      * @param string $username Username
      * @param string $password Password
      * @param string $database Database name
-     * @return void
      */
     public function __construct($hostname, $username, $password, $database)
     {
@@ -53,26 +52,13 @@ class DbAdapterMysql implements IDb {
         return $this->mysqli->prepare($str);
     }
 
-    /*private function getBTStr($arr)
-    {
-        $ret = '';
-        foreach($arr as $a) {
-            $f = explode('/', $a['file']);
-            $ret .= $f[count($f)-2]."/".$f[count($f)-1].":".$a['line'].'('.$a['function'].')';
-        }
-        return $ret;
-    }*/
     /**
      * execute a query
      *
      * @param string $str Query
      * @return mixed A database-specific result set
-     * @todo find another way to activate query debugging
      */
     public function query($str) {
-        /*if (($ret = $this->mysqli->query($str))===false)
-            error_log("query failed: ".str_replace("\n"," ",$str)." [err: ".$this->mysqli->error."]");
-        return $ret;*/
         return $this->mysqli->query($str);
     }
 
