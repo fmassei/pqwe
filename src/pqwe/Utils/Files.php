@@ -53,8 +53,8 @@ class Files {
     }
 
     /**
-     * fragment a filename, also creating the fragmented folder tree if some
-     * subfolders are not present.
+     * fragment a filename. If $newDirMode is not zero it also creates the
+     * fragmented folder tree if some subfolders are not present.
      *
      * When dealing with folders containing thousands of files, is normal to
      * add more layers of folders to store the files into. This comes very
@@ -71,7 +71,7 @@ class Files {
      * @param int $nPrefix Number of characters to take for the
      * fragmentation
      * @param int $newDirMode Permission to pass to mkdir when creating
-     * a new folder
+     * a new folder. If zero it does not attempt to create anything.
      * @throws PqweException
      * @return string
      */
@@ -83,7 +83,7 @@ class Files {
             $subfolder = substr($filename, $i*$nPrefix, $nPrefix);
             $path = self::makePath($path, $subfolder);
         }
-        if (!is_dir($path))
+        if ($newDirMode!=0 && !is_dir($path))
             if (!mkdir($path, $newDirMode, true))
                 throw new PqweException("could not create directory $path");
         return self::makePath($path, $filename);
