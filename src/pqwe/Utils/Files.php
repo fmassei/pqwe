@@ -18,14 +18,23 @@ class Files {
      */
     public static function makePath() {
         $arr = func_get_args();
-        for ($i=0; $i<count($arr)-1; ++$i) {
+        $str = "";
+        for ($i=0; $i<count($arr); ++$i) {
             if ($arr[$i]===null || $arr[$i]=="")
                 continue;
-            if (    $arr[$i][strlen($arr[$i])-1]!=DIRECTORY_SEPARATOR &&
-                    $arr[$i+1][0]!=DIRECTORY_SEPARATOR)
-                $arr[$i] .= DIRECTORY_SEPARATOR;
+            if (strlen($str)>0) {
+                /* two slashes before and after */
+                if (    $str[strlen($str)-1]==DIRECTORY_SEPARATOR &&
+                        $arr[$i][0]==DIRECTORY_SEPARATOR)
+                    $str .= substr($arr[$i], 1);
+                /* no slashes separating */
+                else if (    $str[strlen($str)-1]!=DIRECTORY_SEPARATOR &&
+                             $arr[$i][0]!=DIRECTORY_SEPARATOR)
+                    $str .= DIRECTORY_SEPARATOR.$arr[$i];
+            }
+            $str .= $arr[$i];
         }
-        return implode('', $arr);
+        return $str;
     }
 
     /**
