@@ -21,10 +21,20 @@ class DbFactoryPDO implements FactoryInterface {
      */
     public function create(ServiceManager $sm) {
         $config = $sm->get('config');
-        return new DbAdapterPDO($config['db']['dsn'],
-                                $config['db']['username'],
-                                $config['db']['password'],
-                                $config['db']['options']);
+        $key = $this->getConfigKey();
+        return new DbAdapterPDO($config[$key]['dsn'],
+                                $config[$key]['username'],
+                                $config[$key]['password'],
+                                $config[$key]['options']);
+    }
+
+    /**
+     * Get the config key used to store the connection data
+     *
+     * @return string
+     */
+    protected function getConfigKey() {
+        return 'db';
     }
 }
 

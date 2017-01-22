@@ -21,10 +21,20 @@ class DbFactoryMysql implements FactoryInterface {
      */
     public function create(ServiceManager $sm) {
         $config = $sm->get('config');
-        return new DbAdapterMysql($config['db']['hostname'],
-                                  $config['db']['username'],
-                                  $config['db']['password'],
-                                  $config['db']['database']);
+        $key = $this->getConfigKey();
+        return new DbAdapterMysql($config[$key]['hostname'],
+                                  $config[$key]['username'],
+                                  $config[$key]['password'],
+                                  $config[$key]['database']);
+    }
+
+    /**
+     * Get the config key used to store the connection data
+     *
+     * @return string
+     */
+    protected function getConfigKey() {
+        return 'db';
     }
 }
 
