@@ -6,6 +6,7 @@ namespace pqwe\MVC;
 
 use pqwe\Exception\PqweACLException;
 use pqwe\Exception\PqweMVCException;
+use pqwe\Routing\RouteMatch;
 
 /**
  * Main MVC class
@@ -28,7 +29,7 @@ class MVC {
     /**
      * Check, if ACL is on, if the route is allowed for the role
      *
-     * @param \pqwe\Routing\RouteMatch $routeMatch Route to check
+     * @param RouteMatch $routeMatch Route to check
      * @param string|array $acl_roles Role(s) to check
      * @throws PqweACLException
      * @return void
@@ -75,6 +76,22 @@ class MVC {
     public function run($acl_role=null) {
         $router = $this->serviceManager->getOrGetDefault('pqwe_router');
         $routeMatch = $router->match();
+        $this->runRouteMatch($routeMatch, $acl_role);
+    }
+
+    /**
+     * Run a route match
+     *
+     * This function runs a low-level route match
+     *
+     * @param RouteMatch $routeMatch
+     * @param string|array $acl_role If set, and if using ACLs, check with this
+     *  role or array of roles.
+     * @throws PqweMVCException
+     * @throws PqweACLException
+     * @return void
+     */
+    public function runRouteMatch($routeMatch, $acl_role=null) {
         $this->checkAuth($routeMatch, $acl_role);
         do {
             $controllerClass = $routeMatch->controller;
@@ -88,6 +105,20 @@ class MVC {
                                            $method),
                                      $routeMatch->params);
         $controller->postAction($view, $routeMatch->action);
+    }
+
+    /**
+     * Manually run a controller's action
+     *
+     * @param string $controllerName Name of the controller class
+     * @param string actionName Name of the action
+     * @throws PqweMVCException
+     * @throws PqweACLException
+     * @return void
+     */
+    public function runControllerAction($controllerName, $actionName) {
+        $routeMatch = new RouteMatch($controllerName, $actionName, array());
+        $this->runRouteMatch($routeMatch);
     }
 }
 
