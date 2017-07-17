@@ -38,6 +38,19 @@ class ControllerHTML extends ControllerBase {
     }
 
     /**
+     * Set the name of the file that will be used as the layout.
+     *
+     * Note: this function has to be called before the preAction() takes
+     * place.
+     *
+     * @param string $layoutFile Filename of the layout (no path)
+     * @return void
+     */
+    public function setLayoutFile($layoutFile) {
+        $this->layoutFile = $layoutFile;
+    }
+
+    /**
      * callback, called by the MVC object before the action method
      *
      * This overridden method sets up the layout view, making it ready to be
