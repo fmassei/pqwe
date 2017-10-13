@@ -37,6 +37,7 @@ class Mailer {
      * @param string $from Source address (e.g. no-reply<noreply@pqwe.org>)
      * @param string $file The file path
      * @return bool The result of the mail() function
+     * @deprecated will be renamed soon
      */
     public static function sendMultipart($to, $subject, $message, $from, $file) {
         $filename = basename($file);
@@ -61,6 +62,41 @@ class Mailer {
             "Content-Transfer-Encoding: base64$eol".
             "Content-Disposition: attachment$eol$eol".
             "$file_content$eol$eol".
+            "--$separator--";
+        return mail($to, $subject, "", $headers);
+    }
+
+    /**
+     * Send an email with both text and html
+     *
+     * @param string $to Destination address
+     * @param string $subject EMail subject
+     * @param string $from Source address (e.g. no-reply<noreply@pqwe.org>)
+     * @param string $text The message in plain text
+     * @param string $html The message in HTML format
+     */
+    public static function sendTextAndHtml($to, $subject, $from, $text, $html)
+    {
+        $text = quoted_printable_encode($text);
+        $html = quoted_printable_encode($html);
+        $separator = md5(time());
+        $eol = PHP_EOL;
+        $headers = "From: $from$eol".
+            "MIME-Version: 1.0$eol".
+            "Content-Type: multipart/alternative; boundary=\"$separator\"$eol".
+
+            "--$separator$eol".
+            "Content-Transfer-Encoding: quoted-printable$eol".
+            "Content-Type: text/plain; charset=utf-8$eol".
+            "Mime-Version: 1.0$eol$eol".
+            "$text$eol$eol".
+
+            "--$separator$eol".
+            "Content-Transfer-Encoding: quoted-printable$eol".
+            "Content-Type: text/html; charset=utf-8$eol".
+            "Mime-Version: 1.0$eol$eol".
+            "$html$eol$eol".
+
             "--$separator--";
         return mail($to, $subject, "", $headers);
     }
