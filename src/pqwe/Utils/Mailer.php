@@ -74,6 +74,7 @@ class Mailer {
      * @param string $from Source address (e.g. no-reply<noreply@pqwe.org>)
      * @param string $text The message in plain text
      * @param string $html The message in HTML format
+     * @return bool The result of the mail() function
      */
     public static function sendTextAndHtml($to, $subject, $from, $text, $html)
     {
