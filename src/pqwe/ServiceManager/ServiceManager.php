@@ -34,6 +34,10 @@ use \pqwe\Exception\PqweServiceManagerException;
  *              NAME => CLASSNAME,
  *              ...
  *          ),
+ *          'services' => array(
+ *              NAME => CLASSNAME,
+ *              ...
+ *          ),
  *          'factories' => array(
  *              NAME => CLASSNAME,
  *              ...
@@ -57,6 +61,12 @@ use \pqwe\Exception\PqweServiceManagerException;
  * - invokables: the associated class will be created calling a constructor
  *   with no parameters, the ServiceManager instance injected in the new object,
  *   and the object cached for later requests.
+ * - services: the associated class, typically extended from the class
+ *   "Service", will be created calling a constructor with the serviceManager
+ *   itself as a parameter, the "init()" method called, and the object cached
+ *   for later requests.
+ *   Both a constructor that sets the variable and an empty init() method can
+ *   be obtained deriving {@see \pqwe\ServiceManager\Service}
  * - factories: the associated class will be created calling a constructor
  *   with no parameters, the method create($serviceManager) of the new object
  *   called, and its return value (which will be the constructed object)
@@ -77,9 +87,11 @@ class ServiceManager {
 
     /** @var array $invokables Cached invokable objects */
     protected $invokables;
-    /** @var array $invokables Cached factory objects */
+    /** @var array $services Cached service objects */
+    protected $services;
+    /** @var array $factories Cached factory objects */
     protected $factories;
-    /** @var array $invokables Cached shared objects */
+    /** @var array $shared Cached shared objects */
     protected $shared;
 
     /**
@@ -91,6 +103,8 @@ class ServiceManager {
         $this->instances['config'] = $config;
         $this->invokables = isset($config['service_manager']['invokables']) ?
                         $config['service_manager']['invokables'] : array();
+        $this->services = isset($config['service_manager']['services']) ?
+                        $config['service_manager']['services'] : array();
         $this->factories = isset($config['service_manager']['factories']) ?
                         $config['service_manager']['factories'] : array();
         $this->shared = isset($config['service_manager']['shared']) ?
@@ -106,6 +120,7 @@ class ServiceManager {
     public function isRegistered($what) {
         return  isset($this->instances[$what]) ||
                 isset($this->invokables[$what]) ||
+                isset($this->services[$what]) ||
                 isset($this->factories[$what]);
     }
 
@@ -133,8 +148,20 @@ class ServiceManager {
             $this->instances[$what] = $instance;
             return $this->instances[$what];
         }
+        /* services */
+        else if (isset($this->services[$what])) {
+            $className = $this->services[$what];
+            if ($className[0]!="\\")
+                $className = "\\".$className;
+            $instance = new $className($this);
+            $instance->init();
+            if (isset($this->shared[$what]) && $this->shared[$what]===false)
+                return $instance;
+            $this->instances[$what] = $instance;
+            return $this->instances[$what];
+        }
         /* factories */
-        if (isset($this->factories[$what])) {
+        else if (isset($this->factories[$what])) {
             $className = $this->factories[$what];
             if ($className[0]!="\\")
                 $className = "\\".$className;

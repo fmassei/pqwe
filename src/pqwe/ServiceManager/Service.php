@@ -9,7 +9,20 @@ namespace pqwe\ServiceManager;
  * ServiceManager
  */
 class Service {
-    /** @var \pqwe\ServiceManager\ServiceManager $serviceManager the serviceManager */
+    /** @var ServiceManager $serviceManager the serviceManager */
     public $serviceManager;
+
+    /**
+     * @var ServiceManager $serviceManager the serviceManager
+     */
+    public function __construct(ServiceManager $serviceManager) {
+        $this->serviceManager = $serviceManager;
+    }
+
+    /**
+     * Called by the serviceManager upon creation
+     */
+    public function init() {
+    }
 }
 
