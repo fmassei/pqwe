@@ -80,7 +80,6 @@ class SessionMessenger {
      * clean all the messages
      * 
      * @param string $key If set, return only the messages with the passed key
-     * @return array
      */
     public function clearMessages($key=null) {
         if (!isset($_SESSION[self::SESSIONKEY]))
