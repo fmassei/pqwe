@@ -84,8 +84,8 @@ class Mailer {
         $eol = PHP_EOL;
         $headers = "From: $from$eol".
             "MIME-Version: 1.0$eol".
-            "Content-Type: multipart/alternative; boundary=\"$separator\"$eol".
-
+            "Content-Type: multipart/alternative; boundary=\"$separator\"";
+        $message = 
             "--$separator$eol".
             "Content-Transfer-Encoding: quoted-printable$eol".
             "Content-Type: text/plain; charset=utf-8$eol".
@@ -99,7 +99,7 @@ class Mailer {
             "$html$eol$eol".
 
             "--$separator--";
-        return mail($to, $subject, "", $headers);
+        return mail($to, $subject, $message, $headers);
     }
 }
 
