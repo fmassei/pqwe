@@ -4,6 +4,8 @@
  */
 namespace pqwe\Controller;
 
+use pqwe\Exception\PqweMVCException;
+use pqwe\Exception\PqweServiceManagerException;
 use pqwe\View\IView;
 
 /**
@@ -44,6 +46,7 @@ class ControllerBase {
      * method.
      * @param string $action Name of the called action
      * @return void
+     * @throws PqweMVCException
      */
     public function postAction(IView $view, $action) {
         $view->render();
@@ -55,6 +58,7 @@ class ControllerBase {
      * @param string $page The URL to redirect to.
      * @param int $code The HTTP response code to send to the client
      * @param string $schema The schema to use, null to use the current one
+     * @throws PqweServiceManagerException
      */
     protected function redirect($page, $code=302, $schema=null) {
         $routes = $this->serviceManager->getOrGetDefault('pqwe_routes');

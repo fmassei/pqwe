@@ -4,8 +4,6 @@
  */
 namespace pqwe\Utils;
 
-use pqwe\Exception\PqweException;
-
 /**
  * class with some helpers to send emails
  */
@@ -41,7 +39,7 @@ class Mailer {
      */
     public static function sendMultipart($to, $subject, $message, $from, $file) {
         $filename = basename($file);
-        $file_size = filesize($file);
+        //$file_size = filesize($file);
         $file_content = file_get_contents($file);
         $file_content = chunk_split(base64_encode($file_content));
         $separator = md5(time());

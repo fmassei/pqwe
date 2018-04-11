@@ -52,11 +52,11 @@ class Files {
      * Example: the file 'abcde.txt' will be stored in the 'abc' folder.
      *
      * @param string $filename The filename to fragment
-     * @param string $basePath The basepath to add to the fragment
+     * @param string $basePath The base path to add to the fragment
      * @param int $nPrefix Number of characters to take for the
-     * fragmentation
-     * @param int $newDirMode Permission to pass to mkdir when creating
-     * a new folder
+     *      fragmentation
+     * @param int $newDirMode Permission to pass to mkdir() when creating
+     *      a new folder
      * @throws PqweException
      * @return string
      */
@@ -66,7 +66,7 @@ class Files {
 
     /**
      * fragment a filename. If $newDirMode is not zero it also creates the
-     * fragmented folder tree if some subfolders are not present.
+     * fragmented folder tree if some sub-folders are not present.
      *
      * When dealing with folders containing thousands of files, is normal to
      * add more layers of folders to store the files into. This comes very
@@ -78,7 +78,7 @@ class Files {
      * prefix, will be stored in the 'abc/def/' folder.
      *
      * @param string $filename The filename to fragment
-     * @param string $basePath The basepath to add to the fragment
+     * @param string $basePath The base path to add to the fragment
      * @param int $nLevels Number of layers
      * @param int $nPrefix Number of characters to take for the
      * fragmentation

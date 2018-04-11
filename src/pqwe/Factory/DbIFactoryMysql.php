@@ -1,9 +1,10 @@
 <?php
 /**
- * DbFactoryMysql class
+ * DbIFactoryMysql class
  */
 namespace pqwe\Factory;
 
+use pqwe\Exception\PqweServiceManagerException;
 use pqwe\ServiceManager\ServiceManager;
 use pqwe\Db\DbAdapterMysql;
 
@@ -12,12 +13,13 @@ use pqwe\Db\DbAdapterMysql;
  *
  * @see \pqwe\Db\DbAdapterMysql
  */
-class DbFactoryMysql implements FactoryInterface {
+class DbIFactoryMysql implements IFactory {
     /**
      * creates a DbAdapterMysql object
      *
-     * @param \pqwe\ServiceManager\ServiceManager $sm A ServiceManager instance
-     * @return \pqwe\Db\DbAdapterMysql
+     * @param ServiceManager $sm A ServiceManager instance
+     * @return DbAdapterMysql
+     * @throws PqweServiceManagerException
      */
     public function create(ServiceManager $sm) {
         $config = $sm->get('config');

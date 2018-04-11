@@ -1,9 +1,10 @@
 <?php
 /**
- * DbFactoryPDO class
+ * DbIFactoryPDO class
  */
 namespace pqwe\Factory;
 
+use pqwe\Exception\PqweServiceManagerException;
 use pqwe\ServiceManager\ServiceManager;
 use pqwe\Db\DbAdapterPDO;
 
@@ -12,12 +13,13 @@ use pqwe\Db\DbAdapterPDO;
  *
  * @see \pqwe\Db\DbAdapterPDO
  */
-class DbFactoryPDO implements FactoryInterface {
+class DbIFactoryPDO implements IFactory {
     /**
      * creates a DbAdapterPDO object
      *
-     * @param \pqwe\ServiceManager\ServiceManager $sm A ServiceManager instance
-     * @return \pqwe\Db\DbAdapterPDO
+     * @param ServiceManager $sm A ServiceManager instance
+     * @return DbAdapterPDO
+     * @throws PqweServiceManagerException
      */
     public function create(ServiceManager $sm) {
         $config = $sm->get('config');

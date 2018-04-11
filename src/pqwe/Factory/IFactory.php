@@ -10,7 +10,7 @@ use pqwe\ServiceManager\ServiceManager;
  * Classes implementing this interface can be used as factory objects by the
  * ServiceManager.
  */
-interface FactoryInterface {
+interface IFactory {
     /**
      * creates the object
      *

@@ -50,7 +50,7 @@ class Resource {
      * check if a role is allowed to access this resource
      *
      * @param string $roleName Name of the Role
-     * @param string $priviledge An optional resource privilege
+     * @param string $privilege An optional resource privilege
      * @return bool
      */
     public function isRoleAllowed($roleName, $privilege=null) {

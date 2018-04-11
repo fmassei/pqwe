@@ -4,8 +4,10 @@
  */
 namespace pqwe\Controller;
 
+use pqwe\Exception\PqweMVCException;
 use pqwe\View\View;
 use pqwe\View\IView;
+use pqwe\Routing\RouteMatch;
 
 /**
  * Controller specialized for HTML actions
@@ -56,7 +58,7 @@ class ControllerHTML extends ControllerBase {
      * This overridden method sets up the layout view, making it ready to be
      * rendered (or modified by derived classes in the (pre)action methods).
      *
-     * @param \pqwe\Routing\RouteMatch $routeMatch The matched route.
+     * @param RouteMatch $routeMatch The matched route.
      * @return void
      */
     public function preAction(&$routeMatch) {
@@ -79,22 +81,22 @@ class ControllerHTML extends ControllerBase {
      * called $action.".phtml" in the $viewFolderPath).
      * + If the $noLayout flag is set, the layout will not be rendered.
      *
-     * @param \pqwe\View\IView $view The View object returned by the action
-     * method.
+     * @param IView $view The View object returned by the action method.
      * @param string $action Name of the called action
      * @return void
+     * @throws PqweMVCException
      */
     public function postAction(IView $view, $action) {
         if ($view->isEmpty()) {
-            $fpath = \pqwe\Utils\Files::makePath($this->viewFolderPath,
+            $fPath = \pqwe\Utils\Files::makePath($this->viewFolderPath,
                                                  $action.'.phtml');
-            $view->setViewFile($fpath);
+            $view->setViewFile($fPath);
         }
         if ($this->noLayout) {
             $view->render();
         } else {
-            $this->layoutView->action = $action;
-            $this->layoutView->content = $view->return_output();
+            $this->layoutView->assign("action", $action);
+            $this->layoutView->assign("content", $view->return_output());
             $this->layoutView->render();
         }
     }

@@ -4,8 +4,12 @@
  */
 namespace pqwe\MVC;
 
+use pqwe\Controller\ControllerBase;
 use pqwe\Exception\PqweACLException;
 use pqwe\Exception\PqweMVCException;
+use pqwe\Exception\PqweRoutingException;
+use pqwe\Exception\PqweServiceManagerException;
+use pqwe\Routing\IRouter;
 use pqwe\Routing\RouteMatch;
 
 /**
@@ -31,8 +35,9 @@ class MVC {
      *
      * @param RouteMatch $routeMatch Route to check
      * @param string|array $acl_roles Role(s) to check
-     * @throws PqweACLException
      * @return void
+     * @throws PqweACLException
+     * @throws PqweServiceManagerException
      */
     protected function checkAuth(&$routeMatch, $acl_roles) {
         if (!isset($routeMatch->rawRoute['resource']))
@@ -69,11 +74,14 @@ class MVC {
      * 
      * @param string|array $acl_role If set, and if using ACLs, check with this
      *  role or array of roles.
+     * @return void
      * @throws PqweMVCException
      * @throws PqweACLException
-     * @return void
+     * @throws PqweServiceManagerException
+     * @throws PqweRoutingException
      */
     public function run($acl_role=null) {
+        /** @var IRouter $router */
         $router = $this->serviceManager->getOrGetDefault('pqwe_router');
         $routeMatch = $router->match();
         $this->runRouteMatch($routeMatch, $acl_role);
@@ -87,14 +95,16 @@ class MVC {
      * @param RouteMatch $routeMatch
      * @param string|array $acl_role If set, and if using ACLs, check with this
      *  role or array of roles.
+     * @return void
      * @throws PqweMVCException
      * @throws PqweACLException
-     * @return void
+     * @throws PqweServiceManagerException
      */
     public function runRouteMatch($routeMatch, $acl_role=null) {
         $this->checkAuth($routeMatch, $acl_role);
         do {
             $controllerClass = $routeMatch->controller;
+            /** @var ControllerBase $controller */
             $controller = new $controllerClass($this->serviceManager);
             $controller->preAction($routeMatch);
         } while ($routeMatch->controller!=$controllerClass);
@@ -112,9 +122,10 @@ class MVC {
      *
      * @param string $controllerName Name of the controller class
      * @param string actionName Name of the action
+     * @return void
      * @throws PqweMVCException
      * @throws PqweACLException
-     * @return void
+     * @throws PqweServiceManagerException
      */
     public function runControllerAction($controllerName, $actionName) {
         $routeMatch = new RouteMatch($controllerName, $actionName, array());

@@ -77,7 +77,7 @@ class View implements IView {
      * + otherwise, throw an exception
      *
      * @return string
-     * @throws \pqwe\Exception\PqweMVCException
+     * @throws PqweMVCException
      */
     public function return_output() {
         if ($this->raw_content!==null) {
@@ -95,6 +95,7 @@ class View implements IView {
      * echo the view contents
      *
      * @return void
+     * @throws PqweMVCException
      */
     public function render() {
         echo $this->return_output();

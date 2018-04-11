@@ -4,11 +4,14 @@
  */
 namespace pqwe\ACL;
 
+use pqwe\ServiceManager\ServiceManager;
+use pqwe\Exception\PqweServiceManagerException;
+
 /**
  * ACL (Access Control List) class
  */
 class ACL {
-    /** @var \pqwe\ServiceManager\ServiceManager $serviceManager A
+    /** @var ServiceManager $serviceManager A
     * ServiceManager instance */         
     protected $serviceManager;
     /** @var array $roles List of roles */
@@ -19,8 +22,9 @@ class ACL {
     /**
      * constructor
      *
-     * @param \pqwe\ServiceManager\ServiceManager $serviceManager A
-     * ServiceManager instance
+     * @param ServiceManager $serviceManager A
+     *  ServiceManager instance
+     * @throws PqweServiceManagerException
      */
     public function __construct($serviceManager) {
         $this->serviceManager = $serviceManager;

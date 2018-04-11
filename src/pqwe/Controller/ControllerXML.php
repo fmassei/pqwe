@@ -4,6 +4,7 @@
  */
 namespace pqwe\Controller;
 
+use pqwe\Exception\PqweMVCException;
 use pqwe\View\View;
 use pqwe\View\IView;
 
@@ -22,9 +23,6 @@ class ControllerXML extends ControllerBase {
     protected $version;
     /** @var string $encoding XML file encoding */
     protected $encoding;
-
-    /** @var string $actualDir Path of the controller file, used internally */
-    private $actualDir;
 
     /**
      * constructor
@@ -64,10 +62,11 @@ class ControllerXML extends ControllerBase {
      * + If the $layoutView is empty (as by default), if will be filled with
      * the appropriate XML header.
      *
-     * @param \pqwe\View\IView $view The View object returned by the action
+     * @param IView $view The View object returned by the action
      * method.
      * @param string $action Name of the called action
      * @return void
+     * @throws PqweMVCException
      */
     public function postAction(IView $view, $action) {
         if ($view->isEmpty()) {
@@ -75,7 +74,7 @@ class ControllerXML extends ControllerBase {
                                                  $action.'.phtml');
             $view->setViewFile($fpath);
         }
-        $this->layoutView->action = $action;
+        $this->layoutView->assign("action", $action);
         $this->layoutView->setContent('<?xml version="'.$this->version.'" encoding="'.$this->encoding.'"?>'.$view->return_output());
         $this->layoutView->render();
     }

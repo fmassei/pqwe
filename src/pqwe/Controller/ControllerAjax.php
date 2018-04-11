@@ -5,11 +5,9 @@
 namespace pqwe\Controller;
 
 use pqwe\View\View;
-use pqwe\View\IView;
 
 /**
  * Controller specialized for AJAX actions
- * @todo document this thing
  */
 class ControllerAjax extends ControllerBase {
     /**
@@ -63,7 +61,7 @@ class ControllerAjax extends ControllerBase {
      * build a proper response, returning a JSON string
      *
      * @param bool $success If we managed to fullfill the request
-     * @param string $response The response content
+     * @param string|array $response The response content
      * @return string
      */
     protected function response($success, $response) {

@@ -4,6 +4,8 @@
  */
 namespace pqwe\View;
 
+use pqwe\Exception\PqweMVCException;
+
 /**
  * interface to be implemented by Views
  */
@@ -36,7 +38,16 @@ interface IView {
      * echo the view contents
      *
      * @return void
+     * @throws PqweMVCException
      */
     public function render();
+
+    /**
+     * Return the view output
+     *
+     * @return string
+     * @throws PqweMVCException
+     */
+    public function return_output();
 }
 

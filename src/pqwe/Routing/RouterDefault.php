@@ -4,6 +4,7 @@
  */
 namespace pqwe\Routing;
 
+use pqwe\Exception\PqweMVCException;
 use pqwe\Exception\PqweRoutingException;
 
 /**
@@ -46,8 +47,9 @@ class RouterDefault implements IRouter {
      * Returns a route matching the current URL, or throws an exception
      *
      * @param string $url The URL to match, empty for current
-     * @return \pqwe\Routing\RouteMatch
-     * @throws \pqwe\Exception\PqweRoutingException
+     * @return RouteMatch
+     * @throws PqweRoutingException
+     * @throws PqweMVCException
      */
     public function match($url="") {
         if ($url!='')
@@ -89,6 +91,7 @@ class RouterDefault implements IRouter {
                 break;
             case 'custom':
                 $class = $route['class'];
+                /** @var IRouter $router */
                 $router = new $class($this->serviceManager);
                 if (($match = $router->match($cleanUrl))!==null)
                     return $match;

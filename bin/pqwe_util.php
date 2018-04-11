@@ -185,7 +185,7 @@ command:
             $this->print_usage();
             exit(1);
         }
-        return 0;
+        /* cannot reach this point */
     }
     public function __construct() {
         $this->stdin = fopen('php://stdin', 'r');

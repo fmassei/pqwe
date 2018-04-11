@@ -5,6 +5,7 @@
 namespace pqwe\ServiceManager;
 
 use \pqwe\Exception\PqweServiceManagerException;
+use pqwe\Factory\IFactory;
 
 /**
  * The ServiceManager keeps the application configuration, returns objects
@@ -72,7 +73,7 @@ use \pqwe\Exception\PqweServiceManagerException;
  *   called, and its return value (which will be the constructed object)
  *   cached.
  *   Even if the ServiceManager will not check, is a good idea for the factory
- *   class to implement {@see \pqwe\Factory\FactoryInterface}.
+ *   class to implement {@see \pqwe\Factory\IFactory}.
  * - shared: any name present in the "shared" array with a "false" value will
  *   skip the caching process, giving you always new objects. By default all
  *   the objects are shared.
@@ -153,6 +154,7 @@ class ServiceManager {
             $className = $this->services[$what];
             if ($className[0]!="\\")
                 $className = "\\".$className;
+            /** @var Service $instance */
             $instance = new $className($this);
             $instance->init();
             if (isset($this->shared[$what]) && $this->shared[$what]===false)
@@ -165,6 +167,7 @@ class ServiceManager {
             $className = $this->factories[$what];
             if ($className[0]!="\\")
                 $className = "\\".$className;
+            /** @var IFactory $factory */
             $factory = new $className();
             $instance = $factory->create($this);
             if (isset($this->shared[$what]) && $this->shared[$what]===false)

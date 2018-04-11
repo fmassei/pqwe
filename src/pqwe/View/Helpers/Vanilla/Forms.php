@@ -32,9 +32,9 @@ class Forms {
      * @param string $placeHolder The "placeholder" attribute
      * @return string
      */
-    public function renderText($label, $name, $value, $hasError, $placeholder=null) {
+    public function renderText($label, $name, $value, $hasError, $placeHolder=null) {
         $class = $hasError?'error':'';
-        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        $ph = ($placeHolder!==null)?' placeholder="'.$placeHolder.'"':'';
         if ($this->tableMode) {
             $bb = '<tr><td>'; $bs = '</td><td>'; $be = '</td></tr>';
         } else {
@@ -83,9 +83,9 @@ EOL;
      * @param string $placeHolder The "placeholder" attribute
      * @return string
      */
-    public function renderPassword($label, $name, $value, $hasError, $placeholder=null) {
+    public function renderPassword($label, $name, $value, $hasError, $placeHolder=null) {
         $class = $hasError?'error':'';
-        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        $ph = ($placeHolder!==null)?' placeholder="'.$placeHolder.'"':'';
         if ($this->tableMode) {
             $bb = '<tr><td>'; $bs = '</td><td>'; $be = '</td></tr>';
         } else {

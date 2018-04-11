@@ -19,11 +19,11 @@ class Forms {
      * @param string $placeHolder The "placeholder" attribute
      * @return string
      */
-    public function renderText($label, $name, $value, $hasError, $placeholder=null) {
+    public function renderText($label, $name, $value, $hasError, $placeHolder=null) {
         $class = "form-group".($hasError?" has-error has-feedback":"");
         $errorId = $name.'Error';
         $describedBy = $hasError?' aria-describedby='.$errorId:'';
-        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        $ph = ($placeHolder!==null)?' placeholder="'.$placeHolder.'"':'';
         $ret = <<<EOL
             <div class="{$class}">
             <label class="control-label" for="{$name}">{$label}</label>
@@ -76,11 +76,11 @@ EOL;
      * @param string $placeHolder The "placeholder" attribute
      * @return string
      */
-    public function renderPassword($label, $name, $value, $hasError, $placeholder=null) {
+    public function renderPassword($label, $name, $value, $hasError, $placeHolder=null) {
         $class = "form-group".($hasError?" has-error has-feedback":"");
         $errorId = $name.'Error';
         $describedBy = $hasError?' aria-describedby='.$errorId:'';
-        $ph = ($placeholder!==null)?' placeholder="'.$placeholder.'"':'';
+        $ph = ($placeHolder!==null)?' placeholder="'.$placeHolder.'"':'';
         $ret = <<<EOL
             <div class="{$class}">
             <label class="control-label" for="{$name}">{$label}</label>
