@@ -81,18 +81,17 @@ class ControllerBase {
      * @return string
      */
     protected function getPOSTstr($name) {
-        return (!isset($_POST[$name]))?"":trim($_POST[$name]);
+        return (!isset($_POST[$name])) ? "" : trim($_POST[$name]);
     }
 
     /**
-     * returns trim($_POST[$name]) if the entry is set, or null otherwise
+     * returns $_POST[$name] if the entry is set, or null otherwise
      *
      * @param string $name Name of the entry
      * @return null|string
      */
     protected function getPOSTnull($name) {
-        $str = $this->getPOSTstr($name);
-        return ($str=="") ? null : $str;
+        return (!isset($_POST[$name])) ? null : $_POST[$name];
     }
     /**
      * returns $_POST[$name] if the entry is set, or $default otherwise
@@ -140,17 +139,16 @@ class ControllerBase {
      * @return string
      */
     protected function getGETstr($name) {
-        return (!isset($_GET[$name]))?"":trim($_GET[$name]);
+        return (!isset($_GET[$name])) ? "" : trim($_GET[$name]);
     }
     /**
-     * returns trim($_GET[$name]) if the entry is set, or null otherwise
+     * returns $_GET[$name] if the entry is set, or null otherwise
      *
      * @param string $name Name of the entry
      * @return null|string
      */
     protected function getGETnull($name) {
-        $str = $this->getGETstr($name);
-        return ($str=="") ? null : $str;
+        return (!isset($_GET[$name])) ? null : $_GET[$name];
     }
     /**
      * returns $_GET[$name] if the entry is set, or $default otherwise
