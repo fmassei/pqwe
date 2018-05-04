@@ -83,6 +83,20 @@ class ControllerBase {
     protected function getPOSTstr($name) {
         return (!isset($_POST[$name]))?"":trim($_POST[$name]);
     }
+
+    /**
+     * returns htmlspecialchars(trim($_POST[$name])) if the entry is set, or
+     * null otherwise
+     *
+     * @param string name Name of the entry
+     * @return string|null
+     */
+    protected function getPOSTsanitizedStrOrNull($name) {
+        return (!isset($_POST[$name])) 
+            ? null
+            : htmlspecialchars(trim($_POST[$name]));
+    }
+
     /**
      * returns trim($_POST[$name]) if the entry is set, or null otherwise
      *
@@ -140,6 +154,18 @@ class ControllerBase {
      */
     protected function getGETstr($name) {
         return (!isset($_GET[$name]))?"":trim($_GET[$name]);
+    }
+    /**
+     * returns htmlspecialchars(trim($_GET[$name])) if the entry is set, or
+     * null otherwise
+     *
+     * @param string name Name of the entry
+     * @return string|null
+     */
+    protected function getGETsanitizedStrOrNull($name) {
+        return (!isset($_GET[$name])) 
+            ? null
+            : htmlspecialchars(trim($_GET[$name]));
     }
     /**
      * returns trim($_GET[$name]) if the entry is set, or null otherwise
