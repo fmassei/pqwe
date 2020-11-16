@@ -23,7 +23,7 @@ class Mailer {
             "MIME-Version: 1.0$eol".
             "From: $from$eol".
             "X-Mailer: PHP$eol";
-        return mail($to, $subject, $message, $mailHeaders);
+        return mail($to, $subject, $message, $mailHeaders, "-f $from");
     }
 
     /**
