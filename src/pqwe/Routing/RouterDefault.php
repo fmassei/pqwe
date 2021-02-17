@@ -42,6 +42,20 @@ class RouterDefault implements IRouter {
     }
 
     /**
+     * Returns the URL of a named route, or '/' if not found
+     * 
+     * @param string $name
+     * @return mixed|string
+     */
+    public function namedRouteURL($name) {
+        foreach($this->def as $route) {
+            if (isset($route["name"]) && $route["name"]==$name)
+                return $route["route"];
+        }
+        return "/";
+    }
+
+    /**
      * match the current URL to a route
      *
      * Returns a route matching the current URL, or throws an exception

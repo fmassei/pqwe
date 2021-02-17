@@ -92,6 +92,7 @@ class ControllerHTML extends ControllerBase {
                                                  $action.'.phtml');
             $view->setViewFile($fPath);
         }
+        $view->assign("controller", $this);
         if ($this->noLayout) {
             $view->render();
         } else {

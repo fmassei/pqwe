@@ -53,6 +53,18 @@ class ControllerBase {
     }
 
     /**
+     * Returns the URL of a named route, or '/' if not found
+     *
+     * @param string $routeName
+     * @return string the URL of the named route, or "/" if not found
+     * @throws PqweServiceManagerException
+     */
+    public function getNamedRouteURL($routeName) {
+        $routes = $this->serviceManager->getOrGetDefault('pqwe_router');
+        return $routes->namedRouteURL($routeName);
+    }
+    
+    /**
      * redirect to another page
      *
      * @param string $page The URL to redirect to.
@@ -64,6 +76,7 @@ class ControllerBase {
         $routes = $this->serviceManager->getOrGetDefault('pqwe_routes');
         $routes->redirect($page, $code, $schema);
     }
+    
     /**
      * check if a $_POST[] entry is set and its trim() is not empty
      *
