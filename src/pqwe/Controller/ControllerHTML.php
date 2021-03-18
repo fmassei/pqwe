@@ -97,6 +97,7 @@ class ControllerHTML extends ControllerBase {
             $view->render();
         } else {
             $this->layoutView->assign("action", $action);
+            $this->layoutView->assign("controller", $this);
             $this->layoutView->assign("content", $view->return_output());
             $this->layoutView->render();
         }
