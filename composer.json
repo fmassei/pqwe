@@ -12,7 +12,6 @@
           "email": "fmassei@gmail.com",
           "homepage": "http://www.technicalinsanity.org/" }
     ],
-    "version" : "0.1.4",
     "autoload": {
        "psr-4": {"pqwe\\": "src/pqwe"}
     }
