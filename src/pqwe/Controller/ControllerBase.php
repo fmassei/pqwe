@@ -59,9 +59,9 @@ class ControllerBase {
      * @return string the URL of the named route, or "/" if not found
      * @throws PqweServiceManagerException
      */
-    public function getNamedRouteURL($routeName, ...$params) {
+    public function getNamedRouteURL($routeName) {
         $routes = $this->serviceManager->getOrGetDefault('pqwe_router');
-        return $routes->namedRouteURL($routeName, ...$params);
+        return $routes->namedRouteURL($routeName);
     }
     
     /**

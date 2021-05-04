@@ -47,21 +47,14 @@ class RouterDefault implements IRouter {
      * @param string $name
      * @return mixed|string
      */
-    public function namedRouteURL($name, ...$params) {
+    public function namedRouteURL($name) {
         foreach($this->def as $route) {
             if (!isset($route["name"]) || $route["name"]!=$name)
                 continue;
             switch ($route['type']) {
             case 'exact':
-                return $route["route"];
+                return $route['route'];
             case 'regexp':
-                $str = preg_replace_callback("@\([^\)]+\)@", function($matches) use($params) {
-                    static $i=0;
-                    if (!isset($params[$i]))
-                        return '';
-                    return $params[$i++];
-                }, $route['route']);
-                return substr($str, 1, strlen($str)-2);
             default:
                 return '';
             }
