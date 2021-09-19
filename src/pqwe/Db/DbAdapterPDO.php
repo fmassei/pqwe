@@ -52,7 +52,7 @@ class DbAdapterPDO implements IDb {
      * execute a query
      *
      * @param string $str Query
-     * @return \PDOStatement A database-specific result set
+     * @return \PDOStatement|false A database-specific result set
      */
     public function query($str) {
         return $ret = $this->pdo->query($str);
