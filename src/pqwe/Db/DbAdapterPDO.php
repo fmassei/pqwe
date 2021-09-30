@@ -34,7 +34,7 @@ class DbAdapterPDO implements IDb {
      * prepare a statement
      *
      * @param string $str Statement
-     * @return \PDOStatement A prepared statement object
+     * @return \PDOStatement|false A prepared statement object
      */
     public function prepare($str) {
         return $this->pdo->prepare($str);
