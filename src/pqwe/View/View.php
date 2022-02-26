@@ -14,6 +14,8 @@ class View implements IView {
     protected $viewFile = null;
     /** @var string $raw_content Raw content of the view */
     protected $raw_content = null;
+    /** @var mixed $vars Dynamically assigned variables */
+    protected $vars = array();
 
     /**
      * constructor
@@ -48,8 +50,8 @@ class View implements IView {
     /**
      * Assign a named variable to the view.
      *
-     * It's also possible to just set the variable dynamically to the View
-     * object, without calling this function at all.
+     * Since php8.2 is not possible to just set the variable dynamically, so
+     * we will use the __get and __set magics
      *
      * @param string $name Name of the variable
      * @param mixed $val Value of the variable
@@ -57,6 +59,12 @@ class View implements IView {
      */
     public function assign($name, $val) {
         $this->$name = $val;
+    }
+    public function __set($key, $value) {
+        $this->vars[$key] = $value;
+    }
+    public function __get($key) {
+        return $this->vars[$key];
     }
 
     /**
