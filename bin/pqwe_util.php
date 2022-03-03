@@ -9,10 +9,10 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
-# All other queries to index.php. It works with virtual hosting too.
-RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\$
-RewriteRule ^(.*) - [E=BASE:%1]
-RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+# All other queries to index.php.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php
 # Disable the multiview function in apache
 Options -MultiViews";
     protected $f_indexphp =
