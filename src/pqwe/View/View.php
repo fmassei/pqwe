@@ -66,6 +66,12 @@ class View implements IView {
     public function __get($key) {
         return $this->vars[$key];
     }
+    public function __isset($key) {
+        return isset($this->vars[$key]);
+    }
+    public function __unset($key) {
+        unset($this->vars[$key]);
+    }
 
     /**
      * Associate the view with the passed string
